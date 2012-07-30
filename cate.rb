@@ -19,3 +19,4 @@ r.each do |key,value|
 	Dir.mkdir(dirName) unless File.exists?(dirName)
 	res[key].each{|v| File.rename(oldDir+v,dirName+v) }
 end
+
