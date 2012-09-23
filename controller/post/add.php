@@ -26,6 +26,7 @@ class PostAdd extends control{
 		
 		if($data)
 		{
+			$postModel->incFinderNum($data['createtime']);
 			$this->display(array('code'=>'ok','data'=>$data));
 		}
 

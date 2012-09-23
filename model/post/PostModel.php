@@ -40,11 +40,22 @@ class PostModel{
 
 	}
 
+	public function incFinderNum($pubtime)
+	{
+		$this->PostD->setCollection('finder');
+		$dateYM_str = date("Ym",$pubtime);
+		$dateYM = intval($dateYM_str);
+
+		$sign = $this->PostD->update(array('dateYM'=>$dateYM,'dateYM_str'=>$dateYM_str), array('$inc' => array("num" => 1)),array('upsert'=>true));
+
+		return $sign;
+
+	}
+
 	public function incCmsNum($blog_id)
 	{
 		$this->PostD->setCollection('post');
 		$id = new MOngoId($blog_id);
-		$doc = $this->PostD->findOne(array('_id'=>$id,'status'=>1));
 
 		$sign = $this->PostD->update(array('_id'=>$id,'status'=>1), array('$inc' => array("comment_num" => 1)));
 
