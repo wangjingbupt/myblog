@@ -1,3 +1,0 @@
-myblog
-test
-======
