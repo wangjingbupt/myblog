@@ -46,6 +46,7 @@ class PostModel{
 		$dateYM_str = date("Ym",$pubtime);
 		$dateYM = intval($dateYM_str);
 
+	
 		$sign = $this->PostD->update(array('dateYM'=>$dateYM,'dateYM_str'=>$dateYM_str), array('$inc' => array("num" => 1)),array('upsert'=>true));
 
 		return $sign;
@@ -84,7 +85,7 @@ class PostModel{
 		);
 
 		$sign = $this->PostD->insert($doc);
-		if($sign)
+		if(isset($doc['_id']))
 			return self::mongoDoc2Array($doc);
 
 		return false;

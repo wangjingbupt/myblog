@@ -31,7 +31,8 @@ class CommentModel{
 		);
 
 		$sign = $this->CmsD->insert($doc);
-		if($sign)
+
+		if(isset($doc['_id']))
 			return self::mongoDoc2Array($doc);
 
 		return false;
