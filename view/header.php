@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
+		<meta property="wb:webmaster" content="7bc2850c67b87a95" />
 
     <!-- Le styles -->
     <link href="/assets/css/bootstrap.css" rel="stylesheet">
