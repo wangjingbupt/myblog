@@ -98,7 +98,9 @@ public function post($post)
 							<div class="row-fluid" style="margin-top:20px">
 								<div>
 									<div style='margin-bottom:15px;'>
+									<p>
 										$content
+									</p>
 								</div>
 
 								</div>

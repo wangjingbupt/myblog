@@ -65,9 +65,6 @@
     </div>
 		<div class="container">
 			<div class="well" style='height:750px;' id='blog'>
-					<div class='span2 offset10' style='margin-top:40px;'>
-						<button type="submit" name="post_button" id="post_button" class="btn btn-inverse">提交</button>
-					</div>
 				<legend>New Blog</legend>
 					<label>标题</label>
 					<input type="text" placeholder="" name='post_title' id='post_title' class="input-xxlarge">
@@ -75,7 +72,7 @@
 					<div class="box">
 						<div class="pro_tools" id="testSaveButtons"></div>
 						<div id="frame" class="enty-editor">
-							<textarea id="frameToText1" name='frameToText' style='height:400px;margin-bottom:30px;' class="se_textarea"></textarea>
+							<textarea id="frameToText" name='frameToText'  class="se_textarea"></textarea>
 						</div>
 					</div>
 					<div class='span2 offset10' style='margin-top:40px;'>
@@ -145,11 +142,6 @@
 						}
 					},
 					{
-						"name": "link"
-					},{
-						"name": "backcolor"
-					},
-					{
 						"name": "forecolor"
 					}, {
 						"name": "underline"
@@ -166,35 +158,13 @@
 					}, {
 						"name": "redoManager"
 					}, {
-						"name": "fontFamily"
-					}, {
-						"name": "fontSize"
-					}, {
-						"name": "markList"
-					}, {
-						"name": "numberList"
-					}, {
-						"name": "indent"
-					}, {
-						"name": "outdent"
-					}, {
-						"name": "justifyright"
-					}, {
-						"name": "justifycenter"
-					}, {
-						"name": "justifyleft"
-					}, {
 						"name": "imgUI"
 					}, {
-						"name": "flashUI"
+						"name": "submit"
 					}, {
-						"name": "tableUI"
-					}, {
-						"name": "faceUI"
-					},{
 						"name": "historyUI",
 						"args" : {
-							"id" : 1
+							"id" : 2
 						}
 					}]
 				};
@@ -210,7 +180,7 @@ function postdata(){                              //提交数据函数
 	$.ajax({                                                  //调用jquery的ajax方法   
 type: "POST",                                      //设置ajax方法提交数据的形式   
 url: "/add",                                       //把数据提交到ok.php   
-data: "post_title="+$("#post_title").val()+"&post_content="+$("#frameToText1").val(),     //输入框writer中的值作为提交的数据   
+data: "post_title="+$("#post_title").val()+"&post_content="+window.editor1.operation.submit(),     //输入框writer中的值作为提交的数据   
 success: function(msg){                  //提交成功后的回调，msg变量是ok.php输出的内容。   
 var dataObj=eval("("+msg+")");
 if(dataObj.code == 'ok')

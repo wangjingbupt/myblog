@@ -3,13 +3,18 @@ session_start();
 
 include_once( 'config.php' );
 include_once( 'saetv2.ex.class.php' );
+print_r($_SESSION);
+$token = '2.00BpT76C0NX5Yg7d222a6d39ef2icE';
 
-$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $_SESSION['token']['access_token'] );
-$ms  = $c->home_timeline(); // done
+$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $token );
+//$ms  = $c->home_timeline(); // done
 $uid_get = $c->get_uid();
-$uid = $uid_get['uid'];
-$user_message = $c->show_user_by_id( $uid);//根据ID获取用户等基本信息
 
+$uid = $uid_get['uid'];
+$user_message = $c->show_user_by_id($uid);//根据ID获取用户等基本信息
+//print_r($user_message);
+//print_r($ms);
+//exit;
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -27,7 +32,9 @@ $user_message = $c->show_user_by_id( $uid);//根据ID获取用户等基本信息
 	</form>
 <?php
 if( isset($_REQUEST['text']) ) {
-	$ret = $c->update( $_REQUEST['text'] );	//发送微博
+	echo $_REQUEST['text'];
+	$ret = $c->upload( $_REQUEST['text'] ,'/Users/wangjingbupt/Downloads/DSC05597.JPG' );	//发送微博
+	print_r($ret);
 	if ( isset($ret['error_code']) && $ret['error_code'] > 0 ) {
 		echo "<p>发送失败，错误：{$ret['error_code']}:{$ret['error']}</p>";
 	} else {
