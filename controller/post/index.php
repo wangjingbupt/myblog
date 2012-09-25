@@ -32,6 +32,10 @@ function postDispatch()
 			$className = 'PostFinder';
 			include(CONTROLLER_POST."/finder.php");
 			break;
+		case 'photoNew' :
+			$className = 'PostPhotoNew';
+			include(CONTROLLER_POST."/photoNew.php");
+			break;
 		default: 
 			$className = 'PostList';
 			include(CONTROLLER_POST."/list.php");

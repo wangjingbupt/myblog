@@ -8,9 +8,10 @@ class ViewPhotoNew {
 		include(VIEW.'/header.php');
 		include(VIEW.'/banner.php');
 
-		$html = '<div class="container"><div clsaa="well">';
+		$html = '<div class="container"><div class="well">';
 		$html .= <<<HTML
-    <form id="fileupload" action="server/php/" method="POST" enctype="multipart/form-data">
+		<div>
+    <form id="fileupload" action="/photo/upload/1" method="POST" enctype="multipart/form-data">
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
         <div class="row fileupload-buttonbar">
             <div class="span7">
@@ -50,7 +51,10 @@ class ViewPhotoNew {
         <!-- The table listing the files available for upload/download -->
         <table role="presentation" class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
     </form>
-			
+		</div>
+</div>
+
+</div></div>			
 HTML;
 		echo $html;
 			
