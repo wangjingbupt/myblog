@@ -18,8 +18,9 @@ class PhotoUpload extends control{
 		$photoModel = new PhotoModel();
 
 		$res = $photoModel->upload();
-		print_r($res);
 
+		if($res != '')
+			echo $res;
 	}
 
 

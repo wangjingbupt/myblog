@@ -18,18 +18,44 @@ class PhotoModel{
 		if (!is_uploaded_file($_FILES['imgFile']['tmp_name']))
 			return false;
 
-		$tmpdir = '/tmp/img/';
-
-		$tmpFile = $tmpdir.time().'_'. $_FILES['imgFile']['name'];
+		$tmpFile = UPLOAD_TMP_DIR . $_FILES['imgFile']['name'];
 
 		if (!move_uploaded_file($_FILES['imgFile']['tmp_name'],$tmpFile))
 			return false;
 
-		$ret = $c->upload('test1'.time(), $tmpFile );
+		$ret = $c->upload('分享图片'.time(), $tmpFile );
+
+		@unlink($tmpFile);
+
+		if ( isset($ret['error_code']) && $ret['error_code'] > 0 ) 
+			return false;
+
+		$thumb_pic = file_get_contents($ret['thumbnail_pic']);
+		$thumb_file = IMG_PATH . 'thumb/'.$ret['id'].'_'.$_FILES['imgFile']['name'];
+		if($thumb_pic)
+		{
+			@file_put_contents($thumb_file,$thumb_pic);
+			$pic['thumbnail_pic'] = IMG_URL . 'thumb/'.$ret['id'].'_'.$_FILES['imgFile']['name'];
+		}
+			
+		$bmiddle_pic = file_get_contents($ret['bmiddle_pic']);
+		$bmiddle_file = IMG_PATH . 'bmiddle/'.$ret['id'].'_'.$_FILES['imgFile']['name'];
+		if($bmiddle_pic)
+		{
+			file_put_contents($bmiddle_file,$bmiddle_pic);
+			$pic['bmiddle_pic'] = IMG_URL . 'bmiddle/'.$ret['id'].'_'.$_FILES['imgFile']['name'];
+		}
+
+		$original_pic = file_get_contents($ret['original_pic']);
+		$original_file = IMG_PATH . 'original/'.$ret['id'].'_'.$_FILES['imgFile']['name'];
+		if($original_pic)
+		{
+			file_put_contents($original_file,$original_pic);
+			$pic['original_pic'] = IMG_URL . 'original/'.$ret['id'].'_'.$_FILES['imgFile']['name'];
+		}
+
 		
-		echo $ret['original_pic'];
-		exit;
-		return ;
+		return $pic['original_pic'];
 	}	
 
 	public function newCms($blog_id,$user_name,$content)
