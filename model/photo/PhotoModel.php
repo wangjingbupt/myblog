@@ -12,10 +12,22 @@ class PhotoModel{
 		include(ROOT.'/weibo/config.php');
 		include(ROOT.'/weibo/saetv2.ex.class.php');
 		$token = '2.00BpT76C0NX5Yg7d222a6d39ef2icE';
+
 		$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $token );
-		$ret = $c->upload( $_REQUEST['text'] , $_FILES['tmp_name'] );
+
+		if (!is_uploaded_file($_FILES['imgFile']['tmp_name']))
+			return false;
+
+		$tmpdir = '/tmp/img/';
+
+		$tmpFile = $tmpdir.time().'_'. $_FILES['imgFile']['name'];
+
+		if (!move_uploaded_file($_FILES['imgFile']['tmp_name'],$tmpFile))
+
+		$ret = $c->upload('test1'.time(), $tmpFile );
 		
-		print_r($ret);
+		echo $ret['original_pic'];
+		var_dump($ret);
 		return ;
 	}	
 

@@ -5,7 +5,6 @@ class PhotoUpload extends control{
 
 	public function checkPara(){
 
-		print_r($_FILES);
 		if(empty($_FILES))
 			return false;
 
