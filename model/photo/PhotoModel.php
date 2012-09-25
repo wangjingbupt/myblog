@@ -23,7 +23,10 @@ class PhotoModel{
 		if (!move_uploaded_file($files['tmp_name'],$tmpFile))
 			return false;
 
-		$ret = $c->upload('分享图片'.time(), $tmpFile );
+		list($m,$s) =explode(' ',microtime());
+		$status = '分享图片'.($s+$m);
+
+		$ret = $c->upload($status, $tmpFile );
 
 		@unlink($tmpFile);
 
