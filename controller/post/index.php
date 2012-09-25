@@ -28,6 +28,10 @@ function postDispatch()
 			$className = 'PostDetail';
 			include(CONTROLLER_POST."/detail.php");
 			break;
+		case 'finder' :
+			$className = 'PostFinder';
+			include(CONTROLLER_POST."/finder.php");
+			break;
 		default: 
 			$className = 'PostList';
 			include(CONTROLLER_POST."/list.php");

@@ -20,6 +20,36 @@ class PostModel{
 		return self::mongoObj2Array($cursor);
 	}	
 
+	public function getFinderList($date,$page=0)
+	{
+		if($date == '')
+		{
+			$date = date('Ym');
+		}
+		$s_date_y = intval(substr($date,0,4));
+		$s_date_m = intval(substr($date,4,2));
+		$e_date_y = intval(substr($date,0,4));
+		$e_date_m = $s_date_m+1;
+
+		if($d_date_m > 12)
+		{	
+			$d_date_m -=12;
+			$d_date_y +=1;
+		}
+		$start = strtotime($s_date_y."-".$s_date_m.'-'.'01 00:00:00');
+		$end = strtotime($e_date_y."-".$e_date_m.'-'.'01 00:00:00');
+
+		$this->PostD->setCollection('post');
+		$offset = $page * $this->_postLimit;
+
+		$cursor = $this->PostD->find(array('status'=>1,'createtime'=>array('$gte'=>$start),'$lt'=>$end));
+		
+		$cursor->sort(array('createtime'=>-1))->skip($offset)->limit($this->_postLimit);
+		
+		return self::mongoObj2Array($cursor);
+	}	
+
+
 	public function getFinder()
 	{
 		$this->PostD->setCollection('finder');
