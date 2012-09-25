@@ -1,3 +1,15 @@
+<?php
+include('../config/db.conf.php');
+
+$m = new Mongo(DbConf::$mongoConf);
+$db = $m->selectDB(DbConf::$BDprefix."_blog");
+$c = $db->selectCollection('post');
+
+$cursor = $c->find();
+$num = $cursor.count();
+
+?>
+
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -164,7 +176,7 @@
 					}, {
 						"name": "historyUI",
 						"args" : {
-							"id" : 2
+							"id" : <?php echo $num ;?>
 						}
 					}]
 				};
