@@ -23,11 +23,12 @@ class PhotoModel{
 		$tmpFile = $tmpdir.time().'_'. $_FILES['imgFile']['name'];
 
 		if (!move_uploaded_file($_FILES['imgFile']['tmp_name'],$tmpFile))
+			return false;
 
 		$ret = $c->upload('test1'.time(), $tmpFile );
 		
 		echo $ret['original_pic'];
-		var_dump($ret);
+		exit;
 		return ;
 	}	
 
