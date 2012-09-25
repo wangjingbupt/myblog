@@ -36,13 +36,18 @@ class PostModel{
 			$d_date_m -=12;
 			$d_date_y +=1;
 		}
+		if($s_date_m< 10)
+			$s_date_m = '0'.$s_date_m;
+		if($e_date_m< 10)
+			$e_date_m = '0'.$e_date_m;
+
 		$start = strtotime($s_date_y."-".$s_date_m.'-'.'01 00:00:00');
 		$end = strtotime($e_date_y."-".$e_date_m.'-'.'01 00:00:00');
 
 		$this->PostD->setCollection('post');
 		$offset = $page * $this->_postLimit;
 
-		$cursor = $this->PostD->find(array('status'=>1,'createtime'=>array('$gte'=>$start),'$lt'=>$end));
+		$cursor = $this->PostD->find(array('status'=>1,'createtime'=>array('$gte'=>$start,'$lt'=>$end)));
 		
 		$cursor->sort(array('createtime'=>-1))->skip($offset)->limit($this->_postLimit);
 		

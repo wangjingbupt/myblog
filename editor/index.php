@@ -6,7 +6,7 @@ $db = $m->selectDB(DbConf::$BDprefix."_blog");
 $c = $db->selectCollection('post');
 
 $cursor = $c->find();
-$num = $cursor.count();
+$num = $cursor->count();
 
 ?>
 
