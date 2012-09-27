@@ -31,6 +31,7 @@ abstract class control {
 		//检查链接是否跳转
 		if( $this->checkPara() !== FALSE ){
             $this->includeFiles();
+						$this->login();
             $this->action();
     }
 		return;
@@ -54,6 +55,11 @@ abstract class control {
 		$output = json_encode($data);
 		if ($isReturn) return $output;
 		echo $output;
+	}
+
+	protected function login()
+	{
+			return Login::loginAll();	
 	}
 	
 }

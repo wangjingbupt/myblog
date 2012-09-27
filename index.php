@@ -1,10 +1,13 @@
 <?php
-//error_reporting(E_ALL);
-//ini_set('display_errors',1);
+error_reporting(E_ALL);
+ini_set('display_errors',1);
 print_r($_COOKIE);
 
 include('config/config.php');
 include(DATA.'/mongo.class.php');
+include(UTIL.'/Login.class.php');
+
+include(WEIBO.'/saetv2.ex.class.php');
 
 
 

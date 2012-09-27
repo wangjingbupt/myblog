@@ -7,6 +7,7 @@ define('UTIL', ROOT."/util");
 define('DATA', ROOT."/data");
 define('VIEW', ROOT."/view");
 define('MODEL', ROOT."/model");
+define('WEIBO', ROOT."/weibo");
 
 define('MODEL_POST', MODEL."/post");
 define('MODEL_COMMENT', MODEL."/comment");
@@ -30,5 +31,9 @@ define('REDIRECT_URL', "http://lxsnow.me/");
 
 define('IMG_PATH',ROOT.'/../images/snowblog/');
 define('IMG_URL','http://img.lxsnow.me/');
+
+define( "WB_AKEY" , '628803579' );
+define( "WB_SKEY" , '53cc7c93724ae3fa4a39391f0d76d78c' );
+define( "WB_CALLBACK_URL" , 'http://lxsnow.me/callback/weibo' );
 
 ?>
