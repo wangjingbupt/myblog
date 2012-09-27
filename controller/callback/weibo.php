@@ -15,9 +15,6 @@ class CallBackWeibo extends control{
 
 	public function action(){
 		Login::callbackWeibo($this->code);
-		header("Location: /");	
-
-		
 	}
 
 

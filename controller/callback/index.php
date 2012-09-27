@@ -30,6 +30,10 @@ function callbackDispatch()
 			break;
 
 	}
+	$uri = $_SESSION['REQUEST_URI'];
+	if($uri == '')
+		$uri ='/';
+	header("Location: $uri");	
 }
 
 callbackDispatch();

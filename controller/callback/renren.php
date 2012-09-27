@@ -15,9 +15,6 @@ class CallBackRenren extends control{
 
 	public function action(){
 		Login::callbackRenren($this->code);
-		header("Location: /");	
-
-		
 	}
 
 

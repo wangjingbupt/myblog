@@ -11,7 +11,10 @@ class CallBackLogout extends control{
 
 	public function action(){
 		session_destroy();
-		header("Location: /");	
+		$referer = $_SERVER['HTTP_REFERER'];
+		if($referer == '')
+			$referer ='/';
+		header("Location: {$referer}");	
 
 		
 	}

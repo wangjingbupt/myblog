@@ -37,8 +37,7 @@ function dispatch()
 		include( ROOT."/controller/post/index.php");
 	}
 }
-
 dispatch();
-
+$_SESSION['REQUEST_URI'] = $_SERVER['REQUEST_URI'];
 
 ?>

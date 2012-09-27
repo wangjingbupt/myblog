@@ -18,15 +18,16 @@ class CommentModel{
 		return self::mongoObj2Array($cursor);
 	}	
 
-	public function newCms($blog_id,$user_name,$content)
+	public function newCms($blog_id,$user_name,$content,$uid,$user_type)
 	{
 		$this->CmsD->setCollection('blog_cms');
 		$doc = array(
 			'blog_id'=>$blog_id,
 			'content'=>$content,
-			'user_id'=>'',
+			'user_id'=>$uid,
 			'user_name'=>$user_name,
 			'status'=>1,
+			'user_type'=>$user_type,
 			'createtime'=>time(),
 		);
 

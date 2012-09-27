@@ -131,16 +131,29 @@ return $html;
 }
 public function comment($comments,$post=array())
 {
+	if(!empty($GLOBALS['LOGIN_DATA']))
+	{
+		$login_data = $GLOBALS['LOGIN_DATA'];
+		$name = '<span style="color:#993377;font-weight:bold">'.$login_data['nickName'].'</span><input type="hidden" value = "'.$login_data['nickName'].'" id="cms_name" name="cms_name">';
+		$l = 2;
+		$r = 7;
+	}
+	else
+	{
+		$name = "<input type='text' id='cms_name' name='cms_name' style='height:30px;' placeholder='Do not too long!!'>";
+		$l =4;
+		$r = 7;
+	}
 	$blog_id = $post['_id'];
 	$html=<<<HTML
 			<div class="well">
 				<div class="row-fluid" style="width:95%;margin:0 auto;" id = 'comment'>
 					<legend>评论</legend>
-					<div class="span4">
+					<div class="span$l">
 						<label>昵称</label>
-						<input type="text" id='cms_name' name='cms_name' style='height:30px;' placeholder="Do not too long!!">
+						$name
 					</div>
-					<div class="span7">
+					<div class="span$r">
 						<label>评论</label>
 						<textarea rows="2" id='cms_content' name='cms_content'  class='span12'  placeholder="Say something…"></textarea>
 					</div>
@@ -156,8 +169,21 @@ HTML;
 			foreach($comments as $comment)
 			{
 				$cms_pubtime = date('Y-m-d H:i',$comment['createtime']);
-				$html .='<div class="row-fluid commentbox" style="width:95%;"><div class="span9" style="text-align:left;padding-right:5px;word-wrap:break-word; overflow:hidden"><i class="icon-user"></i> <span>'.$comment['user_name'].': '.$comment['content'].'</span></div><div class="span2" style="text-align:right;"><small style="color:#999999">'.$cms_pubtime.'</small></div></div>';
-
+				switch($comment['user_type'])
+				{
+					case 'weibo': 
+						$html .='<div class="row-fluid commentbox" style="width:95%;"><div class="span9" style="text-align:left;padding-right:5px;word-wrap:break-word; overflow:hidden"><img src="http://img.lxsnow.me/sys/weibo@16.png"> <span><a href="http://weibo.com/u/'.$comment['user_id'].'" target="_blank" >'.$comment['user_name'].'</a>: '.$comment['content'].'</span></div><div class="span2" style="text-align:right;"><small style="color:#999999">'.$cms_pubtime.'</small></div></div>';
+						break;
+					case 'renren':
+						$html .='<div class="row-fluid commentbox" style="width:95%;"><div class="span9" style="text-align:left;padding-right:5px;word-wrap:break-word; overflow:hidden"><img src="http://img.lxsnow.me/sys/renren@16.png"> <span><a href="http://www.renren.com/'.$comment['user_id'].'/profile" target="_blank" >'.$comment['user_name'].'</a>: '.$comment['content'].'</span></div><div class="span2" style="text-align:right;"><small style="color:#999999">'.$cms_pubtime.'</small></div></div>';
+						break;
+					case 'instagram':
+						$html .='<div class="row-fluid commentbox" style="width:95%;"><div class="span9" style="text-align:left;padding-right:5px;word-wrap:break-word; overflow:hidden"><img src="http://img.lxsnow.me/sys/instagram@20.png" style="max-width:16px;"> <span style="color:#993377;">'.$comment['user_name'].'</span>:<span> '.$comment['content'].'</span></div><div class="span2" style="text-align:right;"><small style="color:#999999">'.$cms_pubtime.'</small></div></div>';
+						break;
+					default :
+						$html .='<div class="row-fluid commentbox" style="width:95%;"><div class="span9" style="text-align:left;padding-right:5px;word-wrap:break-word; overflow:hidden"><i class="icon-user"></i> <span>'.$comment['user_name'].': '.$comment['content'].'</span></div><div class="span2" style="text-align:right;"><small style="color:#999999">'.$cms_pubtime.'</small></div></div>';
+						break;
+				}
 			}
 		}
 		$html .='</div></div>';

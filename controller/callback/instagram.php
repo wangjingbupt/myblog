@@ -15,9 +15,6 @@ class CallBackInstagram extends control{
 
 	public function action(){
 		Login::callbackInstagram($this->code);
-		header("Location: /");	
-
-		
 	}
 
 

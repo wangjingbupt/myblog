@@ -29,9 +29,9 @@ abstract class control {
 	
 	public function __construct() {
 		//检查链接是否跳转
+		$this->login();
 		if( $this->checkPara() !== FALSE ){
             $this->includeFiles();
-						$this->login();
             $this->action();
     }
 		return;
