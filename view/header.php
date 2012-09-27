@@ -24,8 +24,8 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <!-- Le fav and touch icons -->
-		<script type="text/javascript" src="http://tjs.sjs.sinajs.cn/t3/platform/js/api/wb.js" charset="utf-8"></script>
-		<link type="text/css" rel="stylesheet" href="http://tjs.sjs.sinajs.cn/t3/style/css/common/card.css" />
+		<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=628803579" type="text/javascript" charset="utf-8"></script>
+		<link href="http://tjs.sjs.sinajs.cn/t3/style/css/common/card.css" type="text/css" rel="stylesheet" />
 
     <link rel="shortcut icon" href="/assets/css/favicon.ico">
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/css/apple-touch-icon-144-precomposed.png">

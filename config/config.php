@@ -26,6 +26,7 @@ define('VIEW_WEIBO', VIEW."/weibo");
 
 
 define('UPLOAD_TMP_DIR', "/tmp/img/");
+define('REDIRECT_URL', "http://lxsnow.me/");
 
 define('IMG_PATH',ROOT.'/../images/snowblog/');
 define('IMG_URL','http://img.lxsnow.me/');
