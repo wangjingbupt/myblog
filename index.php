@@ -1,13 +1,20 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors',1);
-print_r($_COOKIE);
+//error_reporting(E_ALL);
+//ini_set('display_errors',1);
+session_start();
+
+//print_r($_SESSION);
+//print_r($_COOKIE);
 
 include('config/config.php');
 include(DATA.'/mongo.class.php');
 include(UTIL.'/Login.class.php');
+include(UTIL.'/Curl.class.php');
 
-include(WEIBO.'/saetv2.ex.class.php');
+include(UTIL.'/weibo/saetv2.ex.class.php');
+include(UTIL.'/renren/RenrenRestApiService.class.php');
+include(UTIL.'/renren/RenrenOAuthApiService.class.php');
+include(UTIL.'/instagram/Instagram.class.php');
 
 
 
