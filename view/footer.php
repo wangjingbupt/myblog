@@ -16,6 +16,19 @@
     <script src="/assets/js/bootstrap-carousel.js"></script>
     <script src="/assets/js/bootstrap-typeahead.js"></script>
 		<?php echo $data['script']?>
+		<script type="text/javascript">
+		WB.core.load(['connect', 'client', 'widget.base', 'widget.atWhere'], function() {
+				var cfg = {
+							key: '628803579',
+									xdpath: 'http://lxsnow.me/weibo/xd.html'
+										};
+											WB.connect.init(cfg);
+												WB.client.init(cfg);
+													
+														//放置具体的组件代码
+														WB.widget.base.connectButton(document.getElementById("connectBtn"));
+		});
+		</script>
 
   </body>
 </html>
