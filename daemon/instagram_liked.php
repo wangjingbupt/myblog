@@ -174,6 +174,8 @@ function getInsertData($photos,$likes)
 
 $db = connMongo();
 $user = getAdminUser($db);
+if(empty($user) || !is_array($user))
+	exit;
 $token = $user['token'];
 $photos = getPhotos($db);
 if(!is_array($photos))
