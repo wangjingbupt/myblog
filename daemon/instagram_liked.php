@@ -23,6 +23,45 @@ function getAdminUser($db)
 	return false;
 }
 
+function downloadImg($images)
+{
+	$fileDir = ROOT.'../images/snowblog/';
+	$files =array();
+	if(is_array($images) && !empty($images))
+	{
+		foreach($images as $k =>$v)
+		{
+			$file = @file_get_contents($v['url']);
+			if($file)
+			{
+				$arr = explode('/',$v['url']);
+				$num = count($arr-1);
+				if($k == 'low_resolution')
+				{
+					$filePath = $fileDir.'bmiddle/istagram_'.$arr[$num];
+					$url = '/bmiddle/istagram_'.$arr[$num];
+				}
+				else if($k == 'thumbnail')
+				{
+					$filePath = $fileDir.'thumb/istagram_'.$arr[$num];
+					$url = '/thumb/istagram_'.$arr[$num];
+				}
+				else if($k == 'original')
+				{
+					$filePath = $fileDir.'original/istagram_'.$arr[$num];
+					$url = '/original/istagram_'.$arr[$num];
+				}
+				else
+					continue;
+
+				@file_put_contents($filePath,$$file);
+				$files[$k]=$url;
+			}
+		}
+	}
+	return $files;
+}
+
 function insertDb($db,$likes)
 {
 	$c = $db->selectCollection('photos');
@@ -30,26 +69,27 @@ function insertDb($db,$likes)
 	{
 		if($like['type']!='image')
 			continue;
-		foreach($like['images'] as $k =>$image)
-		{
-			$img[$k] =	$image['url']; 
-		}
+		
+		$images = downloadImg($like['images']);
+
 
 		$insert = array(
 			'album_id'=>1,
 			'liked_time'=>$like['created_time'],
 			'org_link' =>$like['link'],
-			'low' =>$img['low_resolution'],
-			'thumb' =>$img['thumbnail'],
-			'standard' =>$img['standard_resolution'],
+			'low' =>$images['low_resolution'],
+			'thumb' =>$images['thumbnail'],
+			'standard' =>$images['standard_resolution'],
 			'instagram_id' =>$like['id'],
-
+			'description'=>$like['caption']['text'],
+			'status'=>1,
 
 		);
-
+		$sign = $c->insert($insert);
+		if(!$sign)
+			return false;
 	}
-
-
+	return true;
 
 }
 
@@ -102,15 +142,6 @@ function getLikeds($token,$max)
 
 }
 
-function getInsert($likes,$photos);
-{
-	foreach($likes as $l_v)
-	{
-
-	}
-
-}
-
 
 
 
@@ -130,6 +161,9 @@ foreach($photos as $photo)
 }
 
 $likes = getLikeds($token,$max);
+print_r($photos);
+print_r($likes);
+exit;
 if(is_array($likes) && !empty($likes))
 	insertDb($db);
 
