@@ -1,6 +1,5 @@
 <?php
 include('../config/config.php');
-include(UTIL.'/Curl.class.php');
 include(CONFIG.'/db.conf.php');
 
 function connMongo()

@@ -1,7 +1,7 @@
 <?php
 include('../config/config.php');
-include(UTIL.'/Curl.class.php');
 include(CONFIG.'/db.conf.php');
+include(UTIL.'/renren/RenrenRestApiService.class.php');
 
 function connMongo()
 {
@@ -21,45 +21,6 @@ function getAdminUser($db)
 		return $user;
 
 	return false;
-}
-
-function downloadImg($images)
-{
-	$fileDir = ROOT.'/../images/snowblog/';
-	$files =array();
-	if(is_array($images) && !empty($images))
-	{
-		foreach($images as $k =>$v)
-		{
-			$file = @file_get_contents($v['url']);
-			if($file)
-			{
-				$arr = explode('/',$v['url']);
-				$num = count($arr)-1;
-				if($k == 'low_resolution')
-				{
-					$filePath = $fileDir.'bmiddle/instagram_'.$arr[$num];
-					$url = '/bmiddle/instagram_'.$arr[$num];
-				}
-				else if($k == 'thumbnail')
-				{
-					$filePath = $fileDir.'thumb/instagram_'.$arr[$num];
-					$url = '/thumb/instagram_'.$arr[$num];
-				}
-				else if($k == 'standard_resolution')
-				{
-					$filePath = $fileDir.'original/instagram_'.$arr[$num];
-					$url = '/original/instagram_'.$arr[$num];
-				}
-				else
-					continue;
-
-				@file_put_contents($filePath,$file);
-				$files[$k]=$url;
-			}
-		}
-	}
-	return $files;
 }
 
 function insertDb($db,$likes)
@@ -96,11 +57,11 @@ function insertDb($db,$likes)
 
 }
 
-function getPhotos($db)
+function getAlbums($db)
 {
 
-	$c = $db->selectCollection('photos');
-	$cursor = $c->find(array('album_id'=>1));	
+	$c = $db->selectCollection('photo_album');
+	$cursor = $c->find(array('type'=>'renren'));	
 	return mongoObj2Array($cursor);
 }
 
@@ -115,31 +76,29 @@ function mongoObj2Array($cursor)
 	return $res;
 }
 
-function getLikeds($token)
+function getRenrenAlbums($token,$uid)
 {
 
-	$curl = new Curl();
+	$rrObj = new RenrenRestApiService;
+
 	$count = 20;
-	$likes=array();
-	$turl = 'https://api.instagram.com/v1/users/self/media/liked?access_token='.$token.'&count='.$count;
-	$url = $turl;
+	$albums=array();
+	$page = 1;
 
 	while(1)
 	{
-		$response = $curl->get($url);
-		$res = json_decode($response,true);
-		if($res['meta']['code'] !=200)
-			break;
-		$data = $res['data'];
-	  $likes = array_merge($likes,$data);
-		if(count($data) <$count)
+		$params = array('uid'=>$uid,'page'=>$page,'count'=>$count,'access_token'=>$token);
+		$res = $rrObj->rr_post_curl('photos.getAlbums', $params);
+		if(isset($res['error_code']))
 			break;
 		
-		$c = $count-1;
-		$max = $data[$c]['id'];
-		$url = $turl.'&max_like_id='.$max;
+	  $albums = array_merge($albums,$res);
+		if(count($res) <$count)
+			break;
+		
+		$page++;
 	}
-	return $likes;
+	return $albums;
 
 }
 
@@ -172,16 +131,24 @@ function getInsertData($photos,$likes)
 
 
 
-$db = connMongo();
-$user = getAdminUser($db);
-if(empty($user) || !is_array($user))
-	exit;
+//$db = connMongo();
+//$user = getAdminUser($db);
+//if(empty($user) || !is_array($user))
+//	exit;
 $token = $user['token'];
-$photos = getPhotos($db);
-if(!is_array($photos))
-	$photos = array();
+$uid = $user['uid'];
+$token ='213266|6.55e60c6ab44be3b7a2e39840715c06d0.2592000.1351494000-342198441';
+$uid = 342198441;
+$uid = 236512134;
 
-$likes = getLikeds($token);
+//$albums = getAlbums($db);
+//if(!is_array($albums))
+//	$albums = array();
+//print_r($albums);
+//exit;
+
+$likes = getRenrenAlbums($token,$uid);
+print_r($likes);exit;
 if(is_array($likes) && !empty($likes))
 {
 	$ls = getInsertData($photos,$likes);
