@@ -159,6 +159,24 @@ class Login{
 		$_SESSION['instagram_profile_image_url'] = $profile_image_url;
 		$_SESSION['instagram_name'] = $user['username'];
 
+
+		if($user['id'] ==54649922 )
+		{
+			$db = new MyMongo('blog','adminUser');
+			$doc = $db->findOne(array('type'=>'instagram'));
+			if(!is_array($doc)  || empty($doc))
+			{
+				$insert=array(
+					'uid'=>$user['id'],
+					'type'=>'instagram',
+					'token' =>$access_info['access_token'],
+				);
+				$db->insert($insert);
+				
+			}
+
+		}
+
 		return true;
 
 	}

@@ -40,8 +40,6 @@ HTML;
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li <?php echo $data['activeHome'];?>  ><a href="/">Home</a></li>
-              <li <?php echo $data['activePhoto'];?> ><a href="/photo">Photo</a></li>
-              <li <?php echo $data['activeWeibo'];?> ><a href="/weibo">Weibo</a></li>
             </ul>
           </div><!--/.nav-collapse -->
 					<?php echo $login; ?>

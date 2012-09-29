@@ -25,7 +25,7 @@ function getAdminUser($db)
 
 function downloadImg($images)
 {
-	$fileDir = ROOT.'../images/snowblog/';
+	$fileDir = ROOT.'/../images/snowblog/';
 	$files =array();
 	if(is_array($images) && !empty($images))
 	{
@@ -35,26 +35,26 @@ function downloadImg($images)
 			if($file)
 			{
 				$arr = explode('/',$v['url']);
-				$num = count($arr-1);
+				$num = count($arr)-1;
 				if($k == 'low_resolution')
 				{
-					$filePath = $fileDir.'bmiddle/istagram_'.$arr[$num];
-					$url = '/bmiddle/istagram_'.$arr[$num];
+					$filePath = $fileDir.'bmiddle/instagram_'.$arr[$num];
+					$url = '/bmiddle/instagram_'.$arr[$num];
 				}
 				else if($k == 'thumbnail')
 				{
-					$filePath = $fileDir.'thumb/istagram_'.$arr[$num];
-					$url = '/thumb/istagram_'.$arr[$num];
+					$filePath = $fileDir.'thumb/instagram_'.$arr[$num];
+					$url = '/thumb/instagram_'.$arr[$num];
 				}
-				else if($k == 'original')
+				else if($k == 'standard_resolution')
 				{
-					$filePath = $fileDir.'original/istagram_'.$arr[$num];
-					$url = '/original/istagram_'.$arr[$num];
+					$filePath = $fileDir.'original/instagram_'.$arr[$num];
+					$url = '/original/instagram_'.$arr[$num];
 				}
 				else
 					continue;
 
-				@file_put_contents($filePath,$$file);
+				@file_put_contents($filePath,$file);
 				$files[$k]=$url;
 			}
 		}
@@ -86,9 +86,12 @@ function insertDb($db,$likes)
 
 		);
 		$sign = $c->insert($insert);
-		if(!$sign)
-			return false;
+		if(isset($insert['_id']))
+			continue;
+		
+		return false;
 	}
+	echo 'ok';
 	return true;
 
 }
@@ -112,16 +115,14 @@ function mongoObj2Array($cursor)
 	return $res;
 }
 
-function getLikeds($token,$max)
+function getLikeds($token)
 {
 
 	$curl = new Curl();
-	$count = 1;
+	$count = 20;
 	$likes=array();
 	$turl = 'https://api.instagram.com/v1/users/self/media/liked?access_token='.$token.'&count='.$count;
 	$url = $turl;
-	if($max != '')
-		$url = $turl.'&max_like_id='.$max;
 
 	while(1)
 	{
@@ -131,7 +132,7 @@ function getLikeds($token,$max)
 			break;
 		$data = $res['data'];
 	  $likes = array_merge($likes,$data);
-		if(count($data) <$count)
+	//	if(count($data) <$count)
 			break;
 		
 		$c = $count-1;
@@ -142,31 +143,51 @@ function getLikeds($token,$max)
 
 }
 
+function getInsertData($photos,$likes)
+{
+	if(empty($photos))
+	{
+		return $likes;
+	}
+	$ls =array();
+
+	foreach($likes as $like)
+	{
+		foreach($photos as $photo)
+		{
+			if($photo['instagram_id'] == $like['id'])
+			{
+				$flag = true;
+				break;
+			}
+		}
+		if($flag == false)
+			$ls[] = $like;
+
+		$flag = false;
+		
+	}
+	return $ls;
+}
 
 
 
 $db = connMongo();
 $user = getAdminUser($db);
 $token = $user['token'];
-$token = '55126795.d191c01.5d5b9a66630e4512b61d03d00375b24b';
 $photos = getPhotos($db);
 if(!is_array($photos))
 	$photos = array();
-$max ='';
-foreach($photos as $photo)
-{
-	$id = $photo['instagram_id'];
-	if($id  > $max)
-		$max = $id;
-}
 
-$likes = getLikeds($token,$max);
-print_r($photos);
-print_r($likes);
-exit;
+$likes = getLikeds($token);
 if(is_array($likes) && !empty($likes))
-	insertDb($db);
-
+{
+	$ls = getInsertData($photos,$likes);
+	if(is_array($ls) && !empty($ls))
+	{
+		insertDb($db,$ls);
+	}
+}
 
 
 
