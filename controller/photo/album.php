@@ -39,7 +39,14 @@ class PhotoAlbum extends control{
 		$data['script'] = <<<HTML
 			<script type='text/javascript' src='/assets/js/jquery.masonry.min.js'></script>
 			<script type="text/javascript">
-
+													function sleep(n) { 
+														var start = new Date().getTime(); 
+														while(true)  if(new Date().getTime()-start > n) break; 
+													}
+													sleep(3000);
+			</script>
+			<script type="text/javascript">
+			
 			$(function(){
 				$('#photos').masonry({
 					itemSelector : '.col',
