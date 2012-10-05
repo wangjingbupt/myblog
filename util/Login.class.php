@@ -114,7 +114,7 @@ class Login{
 		$_SESSION['renren_profile_image_url'] = $profile_image_url;
 		$_SESSION['renren_name'] = $user['name'];
 
-		if($user['id'] ==342198441)// 236512134)
+		if($user['id'] == 236512134)
 		{
 			$db = new MyMongo('blog','adminUser');
 			$doc = $db->findOne(array('type'=>'renren'));
