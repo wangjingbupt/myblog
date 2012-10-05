@@ -9,7 +9,7 @@
 
 					<div class='well offset10' style='padding:0 5px;margin-top:7px;margin-bottom:0px;text-align:right;'><span style='color:#993377; font-weight:bold'>LOGIN&nbsp;</span>
 						<a href='https://api.weibo.com/oauth2/authorize?client_id=628803579&response_type=code&redirect_uri=$weibo_redirect_uri' ><img style="max-width:22px;" src='http://www.sinaimg.cn/blog/developer/wiki/LOGO_24x24.png'></a>
-					<a href='https://graph.renren.com/oauth/authorize?client_id=4e510ea83299443a8d4f520d46914b16&redirect_uri=$renren_redirect_uri&response_type=code'><img style='max-width:20px;' src='http://wiki.dev.renren.com/mediawiki/images/0/0f/Ball32.png'></a>
+					<a href='https://graph.renren.com/oauth/authorize?client_id=4e510ea83299443a8d4f520d46914b16&redirect_uri=$renren_redirect_uri&response_type=code&&scope=read_user_album+read_user_photo'><img style='max-width:20px;' src='http://wiki.dev.renren.com/mediawiki/images/0/0f/Ball32.png'></a>
 					<a href='https://api.instagram.com/oauth/authorize/?client_id=d191c0133cfc44c39642bb29b59dfac2&redirect_uri=$instagram_redirect_uri&response_type=code'><img style='max-width:20px;' src='http://img.lxsnow.me/sys/instagram@20.png'></a>	
 					</div>
 
