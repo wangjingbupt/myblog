@@ -144,8 +144,38 @@ function getInsertData($photos,$likes)
 	return $ls;
 }
 
+function is_start($key="",$file="")
+{
+	global  $argv ;
+	if ($key!= "")
+	{
+		$s = "ps auwwx | grep '". $argv[0] ." "  . $key  . "' | grep -v grep | grep -v vi | grep -v '/bin/sh' | wc -l";
+	}
+	else
+	{
+		$s = "ps auwwx | grep '". $argv[0] . "' | grep -v grep | grep -v vi | grep -v '/bin/sh' | wc -l";
+	}
+
+	$handle = popen($s, "r");
+	if($handle)
+	{
+		$num = fread($handle, 1024);
+	}
+	else
+	{
+		exit ;
+	}
+	pclose($handle);
+	if($num  > 1)
+	{
+		exit ;
+		return false ;
+	}
+	return true ;
+}
 
 
+is_start();
 $db = connMongo();
 $user = getAdminUser($db);
 if(empty($user) || !is_array($user))

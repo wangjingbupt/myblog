@@ -14,13 +14,23 @@
 					</div>
 
 HTML;
-		}else
+		}else if($GLOBALS['LOGIN_DATA']['is_admin']==1)
 		{
+			$login_data = $GLOBALS['LOGIN_DATA'];
+			$login = '<div class="well1 offset10" style="margin-top:8px;width:20%">';
+			$login .='<img src="'.$login_data['profileImg'].'" style="margin:auto 3px;width:20px;b"> <span style="margin-right:8px;color:#993377;font-weight:bold">'.$login_data['nickName'].'</span> <a href="/callback/logout" style="font-weight:bold">登出</a> ';
+
+			$login .='<a href="/editor/" style="font-weight:bold">发博文</a> </div>';
+		}
+		else
+		{
+
 			$login_data = $GLOBALS['LOGIN_DATA'];
 			$login = '<div class="well1 offset10" style="margin-top:8px;width:15%">';
 			$login .='<img src="'.$login_data['profileImg'].'" style="margin:auto 3px;width:20px;b"> <span style="margin-right:8px;color:#993377;font-weight:bold">'.$login_data['nickName'].'</span> <a href="/callback/logout" style="font-weight:bold">登出</a> ';
 
-			$login .='</div>';
+			$login .= '</div>';
+
 		}
 
 	

@@ -48,10 +48,10 @@ class Login{
 			$_SESSION['weibo_uid'] = $uid;
 			$_SESSION['weibo_profile_image_url'] = $user_message['profile_image_url'];
 			$_SESSION['weibo_screen_name'] = $user_message['screen_name'];
-			$cookie = array(
-					'access_token'=>$token,
-					'uid'=>$uid,
-					);
+			if($uid ==	1677691977)
+			{
+				$_SESSION['is_admin'] = 1;
+			}
 
 		}
 
@@ -69,6 +69,7 @@ class Login{
 			$this->loginData['profileImg'] = $_SESSION['weibo_profile_image_url'];
 			$this->loginData['nickName'] = $_SESSION['weibo_screen_name'];
 			$this->loginData['login_type'] = $_SESSION['login_type'];
+			$this->loginData['is_admin'] = $_SESSION['is_admin'];
 
 			$GLOBALS['LOGIN_DATA'] = $this->loginData;
 			return true;
@@ -113,7 +114,7 @@ class Login{
 		$_SESSION['renren_profile_image_url'] = $profile_image_url;
 		$_SESSION['renren_name'] = $user['name'];
 
-		if($user['id'] == 236512134)
+		if($user['id'] ==342198441)// 236512134)
 		{
 			$db = new MyMongo('blog','adminUser');
 			$doc = $db->findOne(array('type'=>'renren'));
@@ -127,6 +128,7 @@ class Login{
 				$db->insert($insert);
 				
 			}
+			$_SESSION['is_admin'] = 1;
 
 		}
 
@@ -145,6 +147,7 @@ class Login{
 			$this->loginData['profileImg'] = $_SESSION['renren_profile_image_url'];
 			$this->loginData['nickName'] = $_SESSION['renren_name'];
 			$this->loginData['login_type'] = $_SESSION['login_type'];
+			$this->loginData['is_admin'] = $_SESSION['is_admin'];
 
 			$GLOBALS['LOGIN_DATA'] = $this->loginData;
 			return true;
@@ -177,7 +180,7 @@ class Login{
 		$_SESSION['instagram_name'] = $user['username'];
 
 
-		if($user['id'] ==55126795 )
+		if($user['id'] ==  54649922 )// 55126795 )
 		{
 			$db = new MyMongo('blog','adminUser');
 			$doc = $db->findOne(array('type'=>'instagram'));
@@ -191,6 +194,7 @@ class Login{
 				$db->insert($insert);
 				
 			}
+			$_SESSION['is_admin'] = 1;
 
 		}
 
@@ -208,6 +212,7 @@ class Login{
 			$this->loginData['profileImg'] = $_SESSION['instagram_profile_image_url'];
 			$this->loginData['nickName'] = $_SESSION['instagram_name'];
 			$this->loginData['login_type'] = $_SESSION['login_type'];
+			$this->loginData['is_admin'] = $_SESSION['is_admin'];
 
 			$GLOBALS['LOGIN_DATA'] = $this->loginData;
 			return true;

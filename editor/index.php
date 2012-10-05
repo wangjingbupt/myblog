@@ -1,5 +1,7 @@
 <?php
+session_start();
 include('../config/db.conf.php');
+//print_r($_SESSION);
 
 $m = new Mongo(DbConf::$mongoConf);
 $db = $m->selectDB(DbConf::$BDprefix."_blog");

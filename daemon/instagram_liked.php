@@ -23,6 +23,30 @@ function getAdminUser($db)
 	return false;
 }
 
+function getAlbum($db)
+{
+	$c = $db->selectCollection('album');
+	$doc = $c->findOne(array('type'=>'instagram'));
+	if(is_array($doc) && !empty($doc))
+		return $doc;
+
+	$insert=array(
+			'title'=>'INSTAGRAM LIKES',
+			'photo_num'=>0,
+			'createtime'=>time(),
+			'uptime'=>time(),
+			//  'cover_img'=>'/bmiddle/3494290901000890_4dbe1e5djw1dwx1gh82cqj.jpg',
+			'cover_img'=>'',
+			'type'=>'instagram',
+			'status'=>1,
+			);
+	$c->insert($insert);
+	if(isset($insert['_id']))
+		return $insert;
+
+	return false;
+}
+
 function downloadImg($images)
 {
 	$fileDir = ROOT.'/../images/snowblog/';
@@ -62,33 +86,33 @@ function downloadImg($images)
 	return $files;
 }
 
-function insertDb($db,$likes)
+function insertDb($db,$likes,$aid)
 {
 	$c = $db->selectCollection('photos');
 	foreach($likes as $like)
 	{
 		if($like['type']!='image')
 			continue;
-		
+
 		$images = downloadImg($like['images']);
 
 
 		$insert = array(
-			'album_id'=>'506dddfdcb44e41132000000',
-			'createtime'=>$like['created_time'],
-			'org_link' =>$like['link'],
-			'low' =>$images['low_resolution'],
-			'thumb' =>$images['thumbnail'],
-			'standard' =>$images['standard_resolution'],
-			'instagram_id' =>$like['id'],
-			'description'=>$like['caption']['text'],
-			'status'=>1,
+				'album_id'=>$aid,
+				'createtime'=>$like['created_time'],
+				'org_link' =>$like['link'],
+				'low' =>$images['low_resolution'],
+				'thumb' =>$images['thumbnail'],
+				'standard' =>$images['standard_resolution'],
+				'instagram_id' =>$like['id'],
+				'description'=>$like['caption']['text'],
+				'status'=>1,
 
-		);
+				);
 		$sign = $c->insert($insert);
 		if(isset($insert['_id']))
 			continue;
-		
+
 		return false;
 	}
 	echo 'ok';
@@ -96,11 +120,11 @@ function insertDb($db,$likes)
 
 }
 
-function getPhotos($db)
+function getPhotos($db,$aid)
 {
 
 	$c = $db->selectCollection('photos');
-	$cursor = $c->find(array('album_id'=>'506dddfdcb44e41132000000'));	
+	$cursor = $c->find(array('album_id'=>$aid));	
 	return mongoObj2Array($cursor);
 }
 
@@ -131,10 +155,10 @@ function getLikeds($token)
 		if($res['meta']['code'] !=200)
 			break;
 		$data = $res['data'];
-	  $likes = array_merge($likes,$data);
+		$likes = array_merge($likes,$data);
 		if(count($data) <$count)
 			break;
-		
+
 		$c = $count-1;
 		$max = $data[$c]['id'];
 		$url = $turl.'&max_like_id='.$max;
@@ -165,31 +189,51 @@ function getInsertData($photos,$likes)
 			$ls[] = $like;
 
 		$flag = false;
-		
+
 	}
 	return $ls;
 }
 
-function update_album($db,$photos)
+function update_album($db,$photos,$aid)
 {
-	
+	$doc = getAlbum($db);
+	$num = count($photos);
+	foreach($photos as $photo )
+	{
+		if($cover['createtime']< $photo['createtime'])
+		{
+			$cover =$photo;
+		}
+
+	}
+	$doc['cover_img'] = $cover['standard'];
+	$doc['uptime'] = $cover['createtime'];
+	$doc['photo_num'] =$num;
+
 	$c = $db->selectCollection('album');
-	$doc = $c->findOne(array('album_id'=>'506dddfdcb44e41132000000'));	
-	print_r($doc);
-	print_r($photos);
-
-
+	$id = new MOngoId($aid);
+	$sing = $c->update(array('type'=>'instagram'),$doc);	
 }
 
 
 
+is_start();
+echo '123';
 $db = connMongo('blog');
 $user = getAdminUser($db);
 if(empty($user) || !is_array($user))
+{
 	exit;
+}
 $token = $user['token'];
 $db = connMongo('photo');
-$photos = getPhotos($db);
+$album = getAlbum($db);
+if(empty($album) || !is_array($album))
+{
+	exit;
+}
+$aid = $album['_id']->__toString();
+$photos = getPhotos($db,$aid);
 if(!is_array($photos))
 	$photos = array();
 
@@ -199,14 +243,40 @@ if(is_array($likes) && !empty($likes))
 	$ls = getInsertData($photos,$likes);
 	if(is_array($ls) && !empty($ls))
 	{
-		insertDb($db,$ls);
+		insertDb($db,$ls,$aid);
 	}
 }
-$photos = getPhotos($db);
-update_album($db,$photos);
+$photos = getPhotos($db,$aid);
+update_album($db,$photos,$aid);
 
+function is_start($key="",$file="")
+{
+	global  $argv ;
+	if ($key!= "")
+	{
+		$s = "ps auwwx | grep '". $argv[0] ." "  . $key  . "' | grep -v grep | grep -v vi | grep -v '/bin/sh' | wc -l";
+	}
+	else
+	{
+		$s = "ps auwwx | grep '". $argv[0] . "' | grep -v grep | grep -v vi | grep -v '/bin/sh' | wc -l";
+	}
 
-
-
+	$handle = popen($s, "r");
+	if($handle)
+	{
+		$num = fread($handle, 1024);
+	}
+	else
+	{
+		exit ;
+	}
+	pclose($handle);
+	if($num  > 1)
+	{
+		exit ;
+		return false ;
+	}
+	return true ;
+}
 
 ?>

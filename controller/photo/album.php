@@ -39,6 +39,7 @@ class PhotoAlbum extends control{
 		$data['script'] = <<<HTML
 			<script type='text/javascript' src='/assets/js/jquery.masonry.min.js'></script>
 			<script type="text/javascript">
+
 			$(function(){
 				$('#photos').masonry({
 					itemSelector : '.col',

@@ -7,6 +7,11 @@ class PostAdd extends control{
 
 		$this->blogTitle = $_POST['post_title'];
 		$this->blogContent = $_POST['post_content']; 
+		
+		if($GLOBALS['LOGIN_DATA']['is_admin'] !=1 )
+		{
+			return false;
+		}
 
 		if($this->blogContent == '' )
 			return false;

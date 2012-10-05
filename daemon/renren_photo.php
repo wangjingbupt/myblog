@@ -144,7 +144,6 @@ function getRenRenPhotos($token,$uid,$aid)
 	$count = 20;
 	$photos=array();
 	$page = 1;
-
 	while(1)
 	{
 		$params = array('uid'=>$uid,'page'=>$page,'count'=>$count,'aid'=>$aid,'access_token'=>$token);
@@ -189,8 +188,38 @@ function getInstertPhoto($photos,$likes)
 	return $ls;
 }
 
+function is_start($key="",$file="")
+{
+	global  $argv ;
+	if ($key!= "")
+	{
+		$s = "ps auwwx | grep '". $argv[0] ." "  . $key  . "' | grep -v grep | grep -v vi | grep -v '/bin/sh' | wc -l";
+	}
+	else
+	{
+		$s = "ps auwwx | grep '". $argv[0] . "' | grep -v grep | grep -v vi | grep -v '/bin/sh' | wc -l";
+	}
 
+	$handle = popen($s, "r");
+	if($handle)
+	{
+		$num = fread($handle, 1024);
+	}
+	else
+	{
+		exit ;
+	}
+	echo $num;
+	pclose($handle);
+	if($num  > 1)
+	{
+		exit ;
+		return false ;
+	}
+	return true ;
+}
 
+is_start();
 $db = connMongo();
 $user = getAdminUser($db);
 //if(empty($user) || !is_array($user))
@@ -205,10 +234,9 @@ $db = connMongo('photo');
 $albums = getAlbums($db);
 if(!is_array($albums))
 	$albums = array();
-//print_r($albums);
-//exit;
 foreach($albums as $album)
 {
+		
 		$albumPhotos = getRenRenPhotos($token,$uid,$album['renren_id']);
 		if(is_array($albumPhotos) && !empty($albumPhotos))
 		{
