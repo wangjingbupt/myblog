@@ -7,8 +7,7 @@ class PhotoUpload extends control{
 
 		if(empty($_FILES))
 			return false;
-		$this->ac = $GLOBALS['URL_PATH'][2];
-		if($this->ac == 1)
+		if(isset($_FILES['files']))
 		{
 			$this->files =array(
 					'name' => $_FILES['files']['name'][0],
@@ -18,9 +17,11 @@ class PhotoUpload extends control{
 					'size' => $_FILES['files']['size'][0],
 			
 			); 
+			$this->ac =1;
 		}
 		else
 			$this->files = $_FILES['imgFile'];
+
 
 
 		return true;

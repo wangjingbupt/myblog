@@ -201,7 +201,7 @@ if(dataObj.code == 'ok')
 }
 else
 {
-	var insertText ='<div class="alert alert-error fade in"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>发表失败!</strong></div>'
+	var insertText ='<div class="alert alert-error fade in"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>发表失败!</strong></div>';
 	document.getElementById("blog").innerHTML = insertText+document.getElementById("blog").innerHTML;
 		
 }

@@ -3,11 +3,11 @@ include('../config/config.php');
 include(CONFIG.'/db.conf.php');
 include(UTIL.'/renren/RenrenRestApiService.class.php');
 
-function connMongo()
+function connMongo($dbName='blog')
 {
 
 	$m = new Mongo();
-	$m_db = DbConf::$BDprefix."_blog";
+	$m_db = DbConf::$BDprefix."_".$dbName;
 	$db = $m->selectDB($m_db);
 	return $db;
 
@@ -16,33 +16,31 @@ function connMongo()
 function getAdminUser($db)
 {
 	$c = $db->selectCollection('adminUser');
-	$user = $c->findOne(array('type'=>'instagram'));
+	$user = $c->findOne(array('type'=>'renren'));
 	if(is_array($user) && !empty($user))
 		return $user;
 
 	return false;
 }
 
-function insertDb($db,$likes)
+function insertDb($db,$albums)
 {
-	$c = $db->selectCollection('photos');
-	foreach($likes as $like)
+	$c = $db->selectCollection('album');
+	foreach($albums as $album)
 	{
-		if($like['type']!='image')
+		if($album['visible']!=99)
 			continue;
 		
-		$images = downloadImg($like['images']);
-
+		$image = downloadImg($album['url']);
 
 		$insert = array(
-			'album_id'=>1,
-			'liked_time'=>$like['created_time'],
-			'org_link' =>$like['link'],
-			'low' =>$images['low_resolution'],
-			'thumb' =>$images['thumbnail'],
-			'standard' =>$images['standard_resolution'],
-			'instagram_id' =>$like['id'],
-			'description'=>$like['caption']['text'],
+			'title'=>$album['name'],
+			'photo_num'=>intval($album['size']),
+			'createtime'=>@strtotime($album['create_time']),
+			'uptime'=>@strtotime($album['update_time']),
+			'cover_img'=>$image,
+			'type'=>'renren',
+			'renren_id'=>$album['aid'],
 			'status'=>1,
 
 		);
@@ -56,11 +54,28 @@ function insertDb($db,$likes)
 	return true;
 
 }
+function downloadImg($url)
+{
+	if($url =="")
+		return '';
+	$imgurl = '';
+	$fileDir = ROOT.'/../images/snowblog/';
+	$file = @file_get_contents($url);
+	if($file)
+	{
+		$arr = explode('/',$url);
+		$num = count($arr)-1;
+		$filePath = $fileDir.'thumb/renren_'.$arr[$num];
+		$imgurl = '/thumb/renren_'.$arr[$num];
+		@file_put_contents($filePath,$file);
+	}
+	return $imgurl;
+}
 
 function getAlbums($db)
 {
 
-	$c = $db->selectCollection('photo_album');
+	$c = $db->selectCollection('album');
 	$cursor = $c->find(array('type'=>'renren'));	
 	return mongoObj2Array($cursor);
 }
@@ -114,7 +129,7 @@ function getInsertData($photos,$likes)
 	{
 		foreach($photos as $photo)
 		{
-			if($photo['instagram_id'] == $like['id'])
+			if($photo['renren_id'] == $like['aid'])
 			{
 				$flag = true;
 				break;
@@ -131,27 +146,28 @@ function getInsertData($photos,$likes)
 
 
 
-//$db = connMongo();
-//$user = getAdminUser($db);
-//if(empty($user) || !is_array($user))
-//	exit;
+$db = connMongo();
+$user = getAdminUser($db);
+if(empty($user) || !is_array($user))
+	exit;
+
 $token = $user['token'];
 $uid = $user['uid'];
-$token ='213266|6.55e60c6ab44be3b7a2e39840715c06d0.2592000.1351494000-342198441';
-$uid = 342198441;
-$uid = 236512134;
+//$token ='213266|6.55e60c6ab44be3b7a2e39840715c06d0.2592000.1351494000-342198441';
+//$uid = 342198441;
+//$uid = 236512134;
+$db = connMongo('photo');
 
-//$albums = getAlbums($db);
-//if(!is_array($albums))
-//	$albums = array();
+$albums = getAlbums($db);
+if(!is_array($albums))
+	$albums = array();
 //print_r($albums);
 //exit;
 
-$likes = getRenrenAlbums($token,$uid);
-print_r($likes);exit;
-if(is_array($likes) && !empty($likes))
+$renren = getRenrenAlbums($token,$uid);
+if(is_array($renren) && !empty($renren))
 {
-	$ls = getInsertData($photos,$likes);
+	$ls = getInsertData($albums,$renren);
 	if(is_array($ls) && !empty($ls))
 	{
 		insertDb($db,$ls);

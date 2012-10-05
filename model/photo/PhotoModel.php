@@ -3,7 +3,7 @@ class PhotoModel{
 
 
 	public function __construct() {
-		$this->CmsD = new MyMongo('comment');
+		$this->PhotoD = new MyMongo('photo');
 
 	}
 
@@ -11,7 +11,7 @@ class PhotoModel{
 	{
 		include(ROOT.'/weibo/config.php');
 		include(ROOT.'/weibo/saetv2.ex.class.php');
-		$token = '2.00BpT76C0NX5Yg7d222a6d39ef2icE';
+		$token = '2.00BpT76C0NX5Yg03649a3e010NxkyI';
 
 		$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $token );
 
@@ -61,36 +61,39 @@ class PhotoModel{
 		return $pic;
 	}	
 
-	public function newCms($blog_id,$user_name,$content)
+	public function getAlbumList()
 	{
-		$this->CmsD->setCollection('blog_cms');
-		$doc = array(
-			'blog_id'=>$blog_id,
-			'content'=>$content,
-			'user_id'=>'',
-			'user_name'=>$user_name,
-			'status'=>1,
-			'createtime'=>time(),
-		);
+		$this->PhotoD->setCollection('album');
 
-		$sign = $this->CmsD->insert($doc);
-
-		if(isset($doc['_id']))
-			return self::mongoDoc2Array($doc);
-
-		return false;
-	}	
-
-	public function getDetail($cms_id)
-	{
-		$this->CmsD->setCollection('blog_cms');
-		$id = new MOngoId($cms_id);
-		$cursor = $this->CmsD->findOne(array('_id'=>$id,'status'=>1));
-
-		return self::mongoDoc2Array($cursor);
-
+		$cursor = $this->PhotoD->find(array('status'=>1));
+		
+		$cursor->sort(array('createtime'=>-1));
+		
+		return self::mongoObj2Array($cursor);
+		
 	}
 
+	public function getAlbum($aid)
+	{
+		$this->PhotoD->setCollection('album');
+		$id =new MOngoId($aid); 
+		$doc = $this->PhotoD->findOne(array('status'=>1,'_id'=>$id));
+		
+		return self::mongoDoc2Array($doc);
+		
+	}
+
+	public function getAlbumPhotos($aid)
+	{
+		$this->PhotoD->setCollection('photos');
+
+		$cursor = $this->PhotoD->find(array('status'=>1,'album_id'=>$aid));
+		
+		$cursor->sort(array('create_time'=>-1));
+		
+		return self::mongoObj2Array($cursor);
+		
+	}
 
 	public function mongoObj2Array($cursor)
 	{

@@ -13,7 +13,15 @@ function photoDispatch()
 			include(CONTROLLER_PHOTO."/upload.php");
 			new $className();
 			break;
+		case 'album' :
+			$className = 'PhotoPhotos';
+			include(CONTROLLER_PHOTO."/photos.php");
+			new $className();
+			break;
 		default: 
+			$className = 'PhotoAlbum';
+			include(CONTROLLER_PHOTO."/album.php");
+			new $className();
 			break;
 
 	}

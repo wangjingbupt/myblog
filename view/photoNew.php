@@ -8,9 +8,28 @@ class ViewPhotoNew {
 		include(VIEW.'/header.php');
 		include(VIEW.'/banner.php');
 
+		$albums = '<select name ="album_id"><option>请选择相册..</option>';
+		if(is_array($data['albums']) && !empty($data['albums']))
+		{
+			foreach($data['albums'] as $album)
+			{
+				$albums .='<option value="'.$album['_id'].'">'.$album['title'].'</option>';
+			}
+		}
+		$albums .='</select>';
+
 		$html = '<div class="container"><div class="well">';
 		$html .= <<<HTML
-		<div>
+		<div >
+			<legend>上传照片</legend>		
+			<label>相册</label>
+				$albums
+				<label id = 'newAlbum'>
+			<button type="submit" name="newalbum_button" id="newalbum_button" class="btn btn-inverse">新建相册</button>
+			</label>
+		</div>
+
+		<div style='margin-top:20px;'>
     <form id="fileupload" action="/photo/upload/1" method="POST" enctype="multipart/form-data">
         <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
         <div class="row fileupload-buttonbar">
@@ -50,8 +69,10 @@ class ViewPhotoNew {
         <br>
         <!-- The table listing the files available for upload/download -->
         <table role="presentation" class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
+				<input type='hidden' value=0 id='photoNum' name='photoNum' />
     </form>
 		</div>
+			<button type="submit" name="photo_button" id="photo_button" class="btn btn-inverse">提交</button>
 </div>
 
 </div></div>			

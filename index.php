@@ -10,6 +10,7 @@ include('config/config.php');
 include(DATA.'/mongo.class.php');
 include(UTIL.'/Login.class.php');
 include(UTIL.'/Curl.class.php');
+include(UTIL.'/Tools.class.php');
 
 include(UTIL.'/weibo/saetv2.ex.class.php');
 include(UTIL.'/renren/RenrenRestApiService.class.php');

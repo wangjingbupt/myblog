@@ -113,6 +113,23 @@ class Login{
 		$_SESSION['renren_profile_image_url'] = $profile_image_url;
 		$_SESSION['renren_name'] = $user['name'];
 
+		if($user['id'] == 236512134)
+		{
+			$db = new MyMongo('blog','adminUser');
+			$doc = $db->findOne(array('type'=>'renren'));
+			if(!is_array($doc)  || empty($doc))
+			{
+				$insert=array(
+					'uid'=>$user['id'],
+					'type'=>'renren',
+					'token' =>$access_info['access_token'],
+				);
+				$db->insert($insert);
+				
+			}
+
+		}
+
 		return true;
 
 	}
@@ -160,7 +177,7 @@ class Login{
 		$_SESSION['instagram_name'] = $user['username'];
 
 
-		if($user['id'] ==54649922 )
+		if($user['id'] ==55126795 )
 		{
 			$db = new MyMongo('blog','adminUser');
 			$doc = $db->findOne(array('type'=>'instagram'));

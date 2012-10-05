@@ -3,11 +3,11 @@ include('../config/config.php');
 include(UTIL.'/Curl.class.php');
 include(CONFIG.'/db.conf.php');
 
-function connMongo()
+function connMongo($dbName = 'blog')
 {
 
 	$m = new Mongo();
-	$m_db = DbConf::$BDprefix."_blog";
+	$m_db = DbConf::$BDprefix."_".$dbName;
 	$db = $m->selectDB($m_db);
 	return $db;
 
@@ -74,8 +74,8 @@ function insertDb($db,$likes)
 
 
 		$insert = array(
-			'album_id'=>1,
-			'liked_time'=>$like['created_time'],
+			'album_id'=>'506dddfdcb44e41132000000',
+			'createtime'=>$like['created_time'],
 			'org_link' =>$like['link'],
 			'low' =>$images['low_resolution'],
 			'thumb' =>$images['thumbnail'],
@@ -100,7 +100,7 @@ function getPhotos($db)
 {
 
 	$c = $db->selectCollection('photos');
-	$cursor = $c->find(array('album_id'=>1));	
+	$cursor = $c->find(array('album_id'=>'506dddfdcb44e41132000000'));	
 	return mongoObj2Array($cursor);
 }
 
@@ -170,13 +170,25 @@ function getInsertData($photos,$likes)
 	return $ls;
 }
 
+function update_album($db,$photos)
+{
+	
+	$c = $db->selectCollection('album');
+	$doc = $c->findOne(array('album_id'=>'506dddfdcb44e41132000000'));	
+	print_r($doc);
+	print_r($photos);
 
 
-$db = connMongo();
+}
+
+
+
+$db = connMongo('blog');
 $user = getAdminUser($db);
 if(empty($user) || !is_array($user))
 	exit;
 $token = $user['token'];
+$db = connMongo('photo');
 $photos = getPhotos($db);
 if(!is_array($photos))
 	$photos = array();
@@ -190,7 +202,8 @@ if(is_array($likes) && !empty($likes))
 		insertDb($db,$ls);
 	}
 }
-
+$photos = getPhotos($db);
+update_album($db,$photos);
 
 
 

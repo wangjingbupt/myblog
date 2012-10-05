@@ -67,21 +67,27 @@ HTML;
 </script>
 <!-- The template to display files available for download -->
 <script id="template-download" type="text/x-tmpl">
-{% for (var i=0, file; file=o.files[i]; i++) { %}
+var num;
+{% for (var i=0, file; file=o.files[i]; i++) {
+	 %}
     <tr class="template-download fade">
         {% if (file.error) { %}
             <td></td>
             <td class="name"><span>{%=file.name%}</span></td>
             <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
             <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
-        {% } else { %}
+        {% } else { 
+					document.getElementById("photoNum").value =parseInt($("#photoNum").val())+1 	 
+					num =  document.getElementById("photoNum").value;
+					%}
             <td class="preview">{% if (file.thumbnail_url) { %}
                 <a href="{%=file.url%}" title="{%=file.name%}" rel="gallery" download="{%=file.name%}"><img src="{%=file.thumbnail_url%}"></a>
             {% } %}</td>
             <td class="name">
                 <a href="{%=file.url%}" title="{%=file.name%}" rel="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
+								<input type="hidden" name="photo_url" id="photo_url_{%=num%}" value ="{%=file.url%}"/>
             </td>
-            <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
+            <td class="size"><span><textarea rows="4" id='desc' name='desc_{%=num%}'  cols='150'  placeholder="图片描述"></textarea></span></td>
             <td colspan="2"></td>
         {% } %}
         <td class="delete">
@@ -93,6 +99,50 @@ HTML;
         </td>
     </tr>
 {% } %}
+
+
+</script>
+<script>
+
+$(document).ready(function(){           
+		$("#photo_button").click(function(){       
+	alert(document.getElementsByName('img_url').elements[0].value);
+		//var img_obj = document.getElementsByName('img_url');
+		
+			//postdata(); 
+			});   
+		});   
+
+function postdata(){ 
+	var j = parseInt($("#photoNum").val())
+  for (var i=0; i<j; i++) {
+		post_data = "desc_$i="+$("#desc_$i").val();
+	}
+	$.ajax({ 
+type: "POST", 
+url: "/photo/add",     
+data: "post_title="+$("#post_title").val()+"&post_content="+$("#desc").val(),  
+success: function(msg){      
+var dataObj=eval("("+msg+")");
+if(dataObj.code == 'ok')
+{
+	window.location.href='/detail/'+dataObj.data._id;
+}
+else
+{
+
+}
+}
+	});}
+</script>
+<script>
+$(document).ready(function(){           
+		$("#newalbum_button").click(function(){       
+				var insertText = '<input type="text" placeholder="相册名称" name="album_title" id="album_title" class="input-xlarge" style="margin-left:15px;">';
+		document.getElementById("newAlbum").innerHTML = document.getElementById("newAlbum").innerHTML + insertText;
+		});   
+			});   
+
 </script>
 <!--
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
