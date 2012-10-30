@@ -2,6 +2,7 @@
 class PostModel{
 
 	private $_postLimit = 15;
+	private $_postDelLimit = 20;
 
 	public function __construct() {
 		$this->PostD = new MyMongo('blog');
@@ -16,6 +17,18 @@ class PostModel{
 		$cursor = $this->PostD->find(array('status'=>1));
 		
 		$cursor->sort(array('createtime'=>-1))->skip($offset)->limit($this->_postLimit);
+		
+		return self::mongoObj2Array($cursor);
+	}	
+
+	public function getDelPosts($page=0)
+	{
+		$this->PostD->setCollection('post');
+		$offset = $page * $this->_postDelLimit;
+
+		$cursor = $this->PostD->find(array('status'=>0));
+		
+		$cursor->sort(array('createtime'=>-1))->skip($offset)->limit($this->_postDelLimit);
 		
 		return self::mongoObj2Array($cursor);
 	}	

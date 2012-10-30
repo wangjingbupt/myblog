@@ -71,7 +71,6 @@ $num = $cursor->count();
             <ul class="nav">
               <li class="active" ><a href="/">Home</a></li>
               <li><a href="/photo">Photo</a></li>
-              <li><a href="/weibo">Weibo</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>

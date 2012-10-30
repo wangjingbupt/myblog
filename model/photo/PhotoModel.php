@@ -1,6 +1,7 @@
 <?php
 class PhotoModel{
 
+  private $_delPhotoLimit = 20;
 
 	public function __construct() {
 		$this->PhotoD = new MyMongo('photo');
@@ -91,6 +92,19 @@ class PhotoModel{
 		
 		$cursor->sort(array('createtime'=>-1));
 		
+		return self::mongoObj2Array($cursor);
+		
+	}
+
+	public function getDelPhotos($page)
+	{
+		$this->PhotoD->setCollection('photos');
+		$offset = $page * $this->_delPhotoLimit;
+
+		$cursor = $this->PhotoD->find(array('status'=>0));
+		
+		$cursor->sort(array('createtime'=>-1))->skip($offset)->limit($this->_delPhotoLimit);
+	
 		return self::mongoObj2Array($cursor);
 		
 	}
