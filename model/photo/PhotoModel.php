@@ -89,7 +89,7 @@ class PhotoModel{
 
 		$cursor = $this->PhotoD->find(array('status'=>1,'album_id'=>$aid));
 		
-		$cursor->sort(array('create_time'=>-1));
+		$cursor->sort(array('createtime'=>-1));
 		
 		return self::mongoObj2Array($cursor);
 		

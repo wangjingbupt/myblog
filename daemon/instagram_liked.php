@@ -218,7 +218,6 @@ function update_album($db,$photos,$aid)
 
 
 is_start();
-echo '123';
 $db = connMongo('blog');
 $user = getAdminUser($db);
 if(empty($user) || !is_array($user))

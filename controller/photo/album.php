@@ -43,15 +43,22 @@ class PhotoAlbum extends control{
 														var start = new Date().getTime(); 
 														while(true)  if(new Date().getTime()-start > n) break; 
 													}
-													sleep(3000);
-			</script>
-			<script type="text/javascript">
-			
+													window.onload = function(){
 			$(function(){
 				$('#photos').masonry({
 					itemSelector : '.col',
 				});
 			});
+														
+													}
+			</script>
+			<script type="text/javascript">
+			
+			//$(function(){
+				//$('#photos').masonry({
+					//itemSelector : '.col',
+			//	});
+			//});
 			</script>
 HTML;
 		$GLOBALS['DATA'] = $data;
