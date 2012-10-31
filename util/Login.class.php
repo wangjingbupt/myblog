@@ -48,7 +48,7 @@ class Login{
 			$_SESSION['weibo_uid'] = $uid;
 			$_SESSION['weibo_profile_image_url'] = $user_message['profile_image_url'];
 			$_SESSION['weibo_screen_name'] = $user_message['screen_name'];
-			if($uid ==	1677691977)
+			if($uid ==	1677691977 || $uid = 1660708313 )
 			{
 				$_SESSION['is_admin'] = 1;
 			}

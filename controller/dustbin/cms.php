@@ -1,7 +1,7 @@
 <?php
-include(MODEL_POST."/PostModel.php");
+include(MODEL_COMMENT."/CommentModel.php");
 
-class DustbinPost extends control{
+class DustbinCms extends control{
 
 
 	public function checkPara(){
@@ -14,9 +14,10 @@ class DustbinPost extends control{
 	}
 
 	public function action(){
-		$postModel = new PostModel();
-		$datas['posts'] = $postModel->getDelPosts($this->page);
+		$cmsModel = new CommentModel();
+		$datas['cms'] = $cmsModel->getDelCms($this->page);
 		$datas['rec'] = $this->rec;
+//		print_r($datas);exit;
 
 
 		$this->format($datas);
@@ -27,7 +28,7 @@ class DustbinPost extends control{
 	public function includeFiles()
 	{
 
-		include(VIEW_DUSTBIN.'/posts.php');
+		include(VIEW_DUSTBIN.'/cms.php');
 
 	}
 	
@@ -37,7 +38,7 @@ class DustbinPost extends control{
 		$data['activePhoto'] = '';
 		$data['activeWeibo'] = '';
 		$GLOBALS['DATA'] = $data;
-		ViewDustbinPost::render($datas);
+		ViewDustbinCms::render($datas);
 		
 		
 		

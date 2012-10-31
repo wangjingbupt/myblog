@@ -84,6 +84,40 @@ class PhotoModel{
 		
 	}
 
+	public function getPhoto($pid)
+	{
+		$this->PhotoD->setCollection('photos');
+		$id =new MOngoId($pid); 
+		$doc = $this->PhotoD->findOne(array('status'=>1,'_id'=>$id));
+		
+		return self::mongoDoc2Array($doc);
+		
+	}
+
+	public function delPhoto($pid)
+	{
+		$this->PhotoD->setCollection('photos');
+		$id =new MOngoId($pid); 
+		$doc = $this->PhotoD->findOne(array('_id'=>$id));
+		$doc['status'] =0;
+		$this->PhotoD->update(array('_id' => $doc['_id']), $doc);
+		
+		return self::mongoDoc2Array($doc);
+		
+	}
+
+	public function recoverPhoto($pid)
+	{
+		$this->PhotoD->setCollection('photos');
+		$id =new MOngoId($pid); 
+		$doc = $this->PhotoD->findOne(array('_id'=>$id));
+		$doc['status'] =1;
+		$this->PhotoD->update(array('_id' => $doc['_id']), $doc);
+		
+		return self::mongoDoc2Array($doc);
+		
+	}
+
 	public function getAlbumPhotos($aid)
 	{
 		$this->PhotoD->setCollection('photos');

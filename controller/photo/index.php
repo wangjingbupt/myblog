@@ -18,6 +18,16 @@ function photoDispatch()
 			include(CONTROLLER_PHOTO."/photos.php");
 			new $className();
 			break;
+	  case 'pic' :
+			$className = 'PhotoPhoto';
+			include(CONTROLLER_PHOTO."/photo.php");
+			new $className();
+			break;
+	  case 'deletepic' :
+			$className = 'PhotoDelPhoto';
+			include(CONTROLLER_PHOTO."/delPhoto.php");
+			new $className();
+			break;
 		default: 
 			$className = 'PhotoAlbum';
 			include(CONTROLLER_PHOTO."/album.php");

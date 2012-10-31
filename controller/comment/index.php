@@ -15,7 +15,7 @@ function commentDispatch()
 			break;
 		case 'delete' :
 			$className = 'CommentDelete';
-			include(CONTROLLER_COMMENT."/delete.php");
+			include(CONTROLLER_COMMENT."/delCms.php");
 			new $className();
 			break;
 		default: 

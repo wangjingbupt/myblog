@@ -1,12 +1,13 @@
 <?php
 
-class PhotoPhotos extends control{
+class PhotoPhoto extends control{
 
 
 	public function checkPara(){
 
-		$this->aid = $GLOBALS['URL_PATH'][2];
+		$this->pid = $GLOBALS['URL_PATH'][2];
 		$this->del = $_GET['del'];
+
 
 		return true;
 
@@ -17,9 +18,13 @@ class PhotoPhotos extends control{
 		
 		$photoModel = new PhotoModel();
 
-		$datas['photos'] = $photoModel->getAlbumPhotos($this->aid);
+		$datas['photo'] = $photoModel->getPhoto($this->pid);
+		if(is_array($datas['photo']) && !empty($datas['photo']))
+		{
+			$this->aid = $datas['photo']['album_id'];
+			$datas['album'] = $photoModel->getAlbum($this->aid);
+		}
 		$datas['albums'] = $photoModel->getAlbumList();
-		$datas['album'] = $photoModel->getAlbum($this->aid);
 		$datas['del'] = $this->del;
 		
 		$this->format($datas);
@@ -30,7 +35,7 @@ class PhotoPhotos extends control{
 	public function includeFiles()
 	{
 
-		include(VIEW.'/photos.php');
+		include(VIEW.'/photo.php');
 
 	}
 
@@ -41,7 +46,7 @@ class PhotoPhotos extends control{
 		$data['activePhoto'] = 'class="active"';
 		$data['activeWeibo'] = '';
 		$GLOBALS['DATA'] = $data;
-		ViewPhotos::render($datas);
+		ViewPhoto::render($datas);
 	}
 
 }

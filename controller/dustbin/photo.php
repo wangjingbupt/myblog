@@ -7,6 +7,7 @@ class DustbinPhoto extends control{
 	public function checkPara(){
 
 		$this->page = intval($GLOBALS['URL_PATH'][2]);
+		$this->rec = $_GET['rec'];
 
 		return true;
 
@@ -18,8 +19,20 @@ class DustbinPhoto extends control{
 		$photoModel = new PhotoModel();
 
 		$datas['photos'] = $photoModel->getDelPhotos($this->page);
-		//$datas['album'] = $photoModel->getAlbum($this->aid);
-		print_r($datas);exit;
+		if(!is_array($datas['photos']))
+		{
+			$datas['photos'] = array();
+		}
+		foreach($datas['photos'] as &$photo)
+		{
+			$aid = $photo['album_id'];
+			if(is_array($datas['album'][$aid]) or empty($datas['album'][$aid]))
+				$datas['album'][$aid] = $photoModel->getAlbum($aid);
+
+		  $photo['albumTitle'] = $datas['album'][$aid]['title'];
+
+		}
+		$datas['rec'] = $this->rec;
 		
 		$this->format($datas);
 	

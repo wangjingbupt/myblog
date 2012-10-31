@@ -10,6 +10,10 @@ class ViewDetail {
 		include(VIEW.'/banner.php');
 
 		$html = '<div class="container"><div class="row-fluid"><div class="span9"><div class = "span12">';
+		if($datas['del'] == 'faild')
+		{
+			$html .='<div class="alert alert-error fade in"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>删除失败!</strong></div>';
+		}
 		if(is_array($datas['post']) && !empty($datas['post']))
 		{
 			$post = $datas['post'];

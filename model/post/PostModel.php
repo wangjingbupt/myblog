@@ -33,6 +33,30 @@ class PostModel{
 		return self::mongoObj2Array($cursor);
 	}	
 
+	public function recoverPost($pid)
+	{
+		$this->PostD->setCollection('post');
+		$id =new MOngoId($pid); 
+
+		$doc = $this->PostD->findOne(array('_id'=>$id));
+		$doc['status'] =1;
+		$this->PostD->update(array('_id' => $doc['_id']), $doc);
+		
+		return self::mongoDoc2Array($doc);
+	}	
+
+	public function delPost($pid)
+	{
+		$this->PostD->setCollection('post');
+		$id =new MOngoId($pid); 
+
+		$doc = $this->PostD->findOne(array('_id'=>$id));
+		$doc['status'] =0;
+		$this->PostD->update(array('_id' => $doc['_id']), $doc);
+		
+		return self::mongoDoc2Array($doc);
+	}	
+
 	public function getFinderList($date,$page=0)
 	{
 		if($date == '')

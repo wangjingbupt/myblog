@@ -6,6 +6,7 @@ class PostDetail extends control{
 	public function checkPara(){
 		
 		$this->blog_id = trim($GLOBALS['URL_PATH'][1]);
+		$this->del = $_GET['del'];
 
 		return true;
 
@@ -23,6 +24,7 @@ class PostDetail extends control{
 		$cmsModel = new CommentModel();
 	
 		$datas['comment'] = $cmsModel->getCmsList($this->blog_id);
+		$datas['del'] = $this->del;
 
 		$this->format($datas);
 

@@ -36,6 +36,10 @@ function postDispatch()
 			$className = 'PostPhotoNew';
 			include(CONTROLLER_POST."/photoNew.php");
 			break;
+		case 'deletepost' :
+			$className = 'PostDelPost';
+			include(CONTROLLER_POST."/delPost.php");
+			break;
 		default: 
 			$className = 'PostList';
 			include(CONTROLLER_POST."/list.php");

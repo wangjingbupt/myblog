@@ -1,5 +1,4 @@
 <?php
-include(VIEW.'/post.php');
 class ViewPhotos {
 
 	public function render($datas)
@@ -10,6 +9,10 @@ class ViewPhotos {
 		include(VIEW.'/banner.php');
 
 		$html = '<div class="container"><div class="row-fluid"><div class="span9"><div class = "span12">';
+		if($datas['del'] == 'succ')
+		{
+			$html .='<div class="alert alert-success fade in"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>删除成功!</strong></div>';
+		}
 		if(is_array($datas['photos']) && !empty($datas['photos']))
 		{
 			$photos = $datas['photos'];
@@ -24,7 +27,7 @@ class ViewPhotos {
 			$active = 'active';
 			foreach($datas['photos'] as $photo)
 			{
-				 $html .= '<div class="item '.$active.'" style="height:600px" ><center><img  style="max-height:600px" src="'.Tools::formatImgUrl($photo['standard']).'" alt=""><div class="carousel-caption"><p>'.$photo['description'].'</p></div></center></div>';
+				 $html .= '<div class="item '.$active.'" style="height:600px" ><center><a href="/photo/pic/'.$photo['_id'].'"><img  style="max-height:600px" src="'.Tools::formatImgUrl($photo['standard']).'" alt=""><div class="carousel-caption"><p>'.$photo['description'].'</p></div></center></div>';
 					$active ='';
 			}
 			$html .='</div><a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a><a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a></div>

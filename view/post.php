@@ -78,6 +78,11 @@ public function post($post)
 	$comment_url =$post['comment_url'];
 	$comment_num = $post['comment_num'];
 	$url = $post['url'];
+	$operation = '';
+	if($GLOBALS['LOGIN_DATA']['is_admin'] ==1)
+	{
+				$operation = '&nbsp;&nbsp;<a href="/deletepost/'.$post['_id'].'"><small>删除</small></a>';
+	}
 	$html = <<<HTML
 						<div class="well">
 							<div class="row-fluid">
@@ -120,7 +125,7 @@ public function post($post)
 								-->
 								<div class="row-fluid" id = "accordion2" >
 									<div class="span2"><span style="color: #aaaaaa;"><small>$pubtime</small></span></div>
-									<div class="span2 offset8"  style="text-align:right;"><!--<a href="#">Like($like_num)</a> --><a href="$comment_url"><small>评论(<span id='cms_num'>$comment_num</span>)</small></a></div>
+									<div class="span2 offset8"  style="text-align:right;"><!--<a href="#">Like($like_num)</a> --><a href="$comment_url"><small>评论(<span id='cms_num'>$comment_num</span>)</small></a>$operation</div>
 								</div>
 							</div>
 						</div><!--/.well -->
@@ -157,9 +162,9 @@ public function comment($comments,$post=array())
 						<label>评论</label>
 						<textarea rows="2" id='cms_content' name='cms_content'  class='span12'  placeholder="Say something…"></textarea>
 					</div>
-				<div class="span2 offset9" style='text-align:right;'>
+				<div class="span2 offset7" style='text-align:right;'>
 				<input type='hidden' name="blog_id" id="blog_id" value="$blog_id" />
-				<button type="submit" name="cms_button" id="cms_button" class="btn btn-inverse btn-small">走你</button>
+				<button type="submit" name="cms_button" id="cms_button" class="btn btn-inverse btn-small">博主是大美女</button>
 				</div>
 				</div>
 			<div id='cms_box' name='cms_box'>
@@ -168,20 +173,24 @@ HTML;
 		{
 			foreach($comments as $comment)
 			{
+				if($GLOBALS['LOGIN_DATA']['is_admin'] ==1)
+				{
+					$operation = '&nbsp;&nbsp;<a href="/comment/delete/'.$comment['_id'].'"><small style="font-weight:bold;">Delete</small></a>';
+				}
 				$cms_pubtime = date('Y-m-d H:i',$comment['createtime']);
 				switch($comment['user_type'])
 				{
 					case 'weibo': 
-						$html .='<div class="row-fluid commentbox" style="width:95%;"><div class="span9" style="text-align:left;padding-right:5px;word-wrap:break-word; overflow:hidden"><img src="http://img.lxsnow.me/sys/weibo@16.png"> <span><a href="http://weibo.com/u/'.$comment['user_id'].'" target="_blank" >'.$comment['user_name'].'</a>: '.$comment['content'].'</span></div><div class="span2" style="text-align:right;"><small style="color:#999999">'.$cms_pubtime.'</small></div></div>';
+						$html .='<div class="row-fluid commentbox" style="width:95%;"><div class="span9" style="text-align:left;padding-right:5px;word-wrap:break-word; overflow:hidden"><img src="http://img.lxsnow.me/sys/weibo@16.png"> <span><a href="http://weibo.com/u/'.$comment['user_id'].'" target="_blank" >'.$comment['user_name'].'</a>: '.$comment['content'].'</span></div><div class="span3" style="text-align:right;"><small style="color:#999999">'.$cms_pubtime.'</small>'.$operation.'</div></div>';
 						break;
 					case 'renren':
-						$html .='<div class="row-fluid commentbox" style="width:95%;"><div class="span9" style="text-align:left;padding-right:5px;word-wrap:break-word; overflow:hidden"><img src="http://img.lxsnow.me/sys/renren@16.png"> <span><a href="http://www.renren.com/'.$comment['user_id'].'/profile" target="_blank" >'.$comment['user_name'].'</a>: '.$comment['content'].'</span></div><div class="span2" style="text-align:right;"><small style="color:#999999">'.$cms_pubtime.'</small></div></div>';
+						$html .='<div class="row-fluid commentbox" style="width:95%;"><div class="span9" style="text-align:left;padding-right:5px;word-wrap:break-word; overflow:hidden"><img src="http://img.lxsnow.me/sys/renren@16.png"> <span><a href="http://www.renren.com/'.$comment['user_id'].'/profile" target="_blank" >'.$comment['user_name'].'</a>: '.$comment['content'].'</span></div><div class="span3" style="text-align:right;"><small style="color:#999999">'.$cms_pubtime.'</small>'.$operation.'</div></div>';
 						break;
 					case 'instagram':
-						$html .='<div class="row-fluid commentbox" style="width:95%;"><div class="span9" style="text-align:left;padding-right:5px;word-wrap:break-word; overflow:hidden"><img src="http://img.lxsnow.me/sys/instagram@20.png" style="max-width:16px;"> <span style="color:#993377;">'.$comment['user_name'].'</span>:<span> '.$comment['content'].'</span></div><div class="span2" style="text-align:right;"><small style="color:#999999">'.$cms_pubtime.'</small></div></div>';
+						$html .='<div class="row-fluid commentbox" style="width:95%;"><div class="span9" style="text-align:left;padding-right:5px;word-wrap:break-word; overflow:hidden"><img src="http://img.lxsnow.me/sys/instagram@20.png" style="max-width:16px;"> <span style="color:#993377;">'.$comment['user_name'].'</span>:<span> '.$comment['content'].'</span></div><div class="span3" style="text-align:right;"><small style="color:#999999">'.$cms_pubtime.'</small>'.$operation.'</div></div>';
 						break;
 					default :
-						$html .='<div class="row-fluid commentbox" style="width:95%;"><div class="span9" style="text-align:left;padding-right:5px;word-wrap:break-word; overflow:hidden"><i class="icon-user"></i> <span>'.$comment['user_name'].': '.$comment['content'].'</span></div><div class="span2" style="text-align:right;"><small style="color:#999999">'.$cms_pubtime.'</small></div></div>';
+						$html .='<div class="row-fluid commentbox" style="width:95%;"><div class="span9" style="text-align:left;padding-right:5px;word-wrap:break-word; overflow:hidden"><i class="icon-user"></i> <span>'.$comment['user_name'].': '.$comment['content'].'</span></div><div class="span3" style="text-align:right;"><small style="color:#999999">'.$cms_pubtime.'</small>'.$operation.'</div></div>';
 						break;
 				}
 			}
