@@ -1,5 +1,6 @@
 <?php
 include(MODEL_COMMENT."/CommentModel.php");
+include(MODEL_POST."/PostModel.php");
 
 class DustbinCms extends control{
 
@@ -15,9 +16,24 @@ class DustbinCms extends control{
 
 	public function action(){
 		$cmsModel = new CommentModel();
+		$postModel = new PostModel();
 		$datas['cms'] = $cmsModel->getDelCms($this->page);
 		$datas['rec'] = $this->rec;
-//		print_r($datas);exit;
+		if(is_array($datas['cms']) && !empty($datas['cms']))
+		{
+			foreach($datas['cms'] as &$cms)
+			{
+				$pid = $cms['blog_id'];
+				if(!is_array($datas['post'][$pid]) or empty($datas['post'][$pid]))
+				{
+					$datas['post'][$pid] = $postModel->getDetail($pid);
+				}
+				$cms['blogTitle'] = $datas['post'][$pid]['title'];
+
+			}
+		}
+//	print_r($datas);
+//exit;
 
 
 		$this->format($datas);

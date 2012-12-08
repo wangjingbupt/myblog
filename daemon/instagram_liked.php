@@ -197,14 +197,17 @@ function getInsertData($photos,$likes)
 function update_album($db,$photos,$aid)
 {
 	$doc = getAlbum($db);
-	$num = count($photos);
+	$num = 0;
 	foreach($photos as $photo )
 	{
 		if($cover['createtime']< $photo['createtime'])
 		{
 			$cover =$photo;
 		}
-
+		if($photo['status'] ==1)
+		{
+			$num++;
+		}
 	}
 	$doc['cover_img'] = $cover['standard'];
 	$doc['uptime'] = $cover['createtime'];

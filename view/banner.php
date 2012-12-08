@@ -63,7 +63,7 @@ HTML;
 	
 	?>
 	
-	<body>
+	<body style='font-family: "Strait","Molle";'>
 
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
@@ -73,11 +73,11 @@ HTML;
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <span class="brand" style='color:#ffffff'> LXSnow</span>
+          <span class="brand" style='color:#ffffff;'> LXSnow</span>
           <div class="nav-collapse collapse">
             <ul class="nav">
-              <li <?php echo $data['activeHome'];?>  ><a href="/">Home</a></li>
-              <li <?php echo $data['activePhoto'];?>  ><a href="/photo">Photo</a></li>
+              <li <?php echo $data['activeHome'];?>  ><a href="/" >Home</a></li>
+              <li <?php echo $data['activePhoto'];?>  ><a href="/photo" >Photo</a></li>
             </ul>
           </div><!--/.nav-collapse -->
 					<?php echo $login; ?>

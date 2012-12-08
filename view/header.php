@@ -7,6 +7,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
 		<meta property="wb:webmaster" content="7bc2850c67b87a95" />
+		<link href='http://fonts.googleapis.com/css?family=Molle:400italic' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Strait' rel='stylesheet' type='text/css'>
 
 
     <!-- Le styles -->

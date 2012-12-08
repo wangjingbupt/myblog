@@ -23,7 +23,10 @@ class DustbinRecoverPost extends control{
 		$post = $postModel->recoverPost($this->pid);
 		$uri = "/dustbin/post";
 		if($post['status'] == 1)
+		{
+			$postModel->incFinderNum($post['createtime']);
 			$uri .='?rec=succ';
+		}
 	  else
 			$uri .='?rec=faild';
 		

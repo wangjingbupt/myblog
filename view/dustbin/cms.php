@@ -26,7 +26,7 @@ class ViewDustbinCms {
 			foreach($datas['cms'] as $cms)
 			{
 				$cms['pubtime'] = date("Y-m-d H:i",$cms['createtime']);
-				$html .= '<tr><td style="width:300px"><p style="color:#7a0c7d;">'.$cms['content'].'</p></td><td style="width:150px;text-align:center;color:#999999;">'.$cms['user_name'].'</td><td style="width:200px;text-align:center;color:#999999;">'.$cms['blogTitle'].'</td><td style="width:200px;text-align:center;color:#999999;">'.$cms['pubtime'].'</td><td style="width:80px;text-align:center;"><a href="/dustbin/recoverCms/'.$cms['_id'].'">恢复</a></td></tr>';
+				$html .= '<tr><td style="width:300px"><p style="color:#7a0c7d;">'.$cms['content'].'</p></td><td style="width:150px;text-align:center;color:#999999;">'.$cms['user_name'].'</td><td style="width:200px;color:#999999;"><a href="/detail/'.$cms['blog_id'].'">'.$cms['blogTitle'].'</a></td><td style="width:200px;text-align:center;color:#999999;">'.$cms['pubtime'].'</td><td style="width:80px;text-align:center;"><a href="/dustbin/recoverCms/'.$cms['_id'].'">恢复</a></td></tr>';
 			}
 			$html .='</table>';
 		}

@@ -22,6 +22,7 @@ class PostDelPost extends control{
 		$post = $postModel->delPost($this->pid);
 		if($post['status'] == 0)
 		{
+			$postModel->decFinderNum($post['createtime']);
 			$uri = '/';
 			header("Location: $uri");
 		}

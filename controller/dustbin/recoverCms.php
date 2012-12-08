@@ -1,5 +1,6 @@
 <?php
 include(MODEL_COMMENT."/CommentModel.php");
+include(MODEL_POST."/PostModel.php");
 
 class DustbinRecoverCms extends control{
 
@@ -19,11 +20,15 @@ class DustbinRecoverCms extends control{
 		
 		
 		$cmsModel = new CommentModel();
+		$postModel = new PostModel();
 
 		$cms = $cmsModel->recoverCms($this->cid);
 		$uri = "/dustbin/cms";
 		if($cms['status'] == 1)
+		{
+			$postModel->incCmsNum($cms['blog_id']);
 			$uri .='?rec=succ';
+		}
 	  else
 			$uri .='?rec=faild';
 		

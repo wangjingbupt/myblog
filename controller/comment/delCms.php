@@ -1,4 +1,5 @@
 <?php
+include(MODEL_POST."/PostModel.php");
 
 class CommentDelete extends control{
 
@@ -18,10 +19,12 @@ class CommentDelete extends control{
 		
 		
 		$cmsModel = new CommentModel();
+		$postModel = new PostModel();
 
 		$cms = $cmsModel->delCms($this->cid);
 		if($cms['status'] == 0)
 		{
+			$postModel->decCmsNum($cms['blog_id']);
 			$uri = '/detail/'.$cms['blog_id']."?del=succ";
 			header("Location: $uri");
 		}

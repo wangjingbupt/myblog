@@ -26,7 +26,7 @@ class DustbinPhoto extends control{
 		foreach($datas['photos'] as &$photo)
 		{
 			$aid = $photo['album_id'];
-			if(is_array($datas['album'][$aid]) or empty($datas['album'][$aid]))
+			if(!is_array($datas['album'][$aid]) or empty($datas['album'][$aid]))
 				$datas['album'][$aid] = $photoModel->getAlbum($aid);
 
 		  $photo['albumTitle'] = $datas['album'][$aid]['title'];
