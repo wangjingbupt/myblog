@@ -24,7 +24,7 @@ class MyMongo{
 	public function getDbHandler()
 	{
 		$this->dbHandler = $this->handler->selectDB($this->db);
-	//	$this->dbHandler->authenticate(DbConf::$mongoAuth[0], DbConf::$mongoAuth[1]);
+		$this->dbHandler->authenticate(DbConf::$mongoAuth[0], DbConf::$mongoAuth[1]);
 		return $this->dbHandler;
 	}
 

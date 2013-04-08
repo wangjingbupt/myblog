@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors',1);
 include('../config/config.php');
 include(UTIL.'/Curl.class.php');
 include(CONFIG.'/db.conf.php');
@@ -6,9 +8,10 @@ include(CONFIG.'/db.conf.php');
 function connMongo($dbName = 'blog')
 {
 
-	$m = new Mongo();
+	$m = new Mongo(DbConf::$mongoConf);
 	$m_db = DbConf::$BDprefix."_".$dbName;
 	$db = $m->selectDB($m_db);
+        $db->authenticate(DbConf::$mongoAuth[0],DbConf::$mongoAuth[1] );
 	return $db;
 
 }

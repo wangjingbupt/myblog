@@ -6,9 +6,10 @@ include(UTIL.'/renren/RenrenRestApiService.class.php');
 function connMongo($dbName='blog')
 {
 
-	$m = new Mongo();
+	$m = new Mongo(DbConf::$mongoConf);
 	$m_db = DbConf::$BDprefix."_".$dbName;
 	$db = $m->selectDB($m_db);
+        $db->authenticate(DbConf::$mongoAuth[0],DbConf::$mongoAuth[1] );
 	return $db;
 
 }
