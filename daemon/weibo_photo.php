@@ -1,9 +1,11 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors',1);
-include('../config/config.php');
-include(UTIL.'/Curl.class.php');
-include(CONFIG.'/db.conf.php');
+//include('../config/config.php');
+//include(UTIL.'/Curl.class.php');
+//include(CONFIG.'/db.conf.php');
+//include(UTIL.'/weibo/saetv2.ex.class.php');
+include('../util/weibo/saetv2.ex.class.php');
 
 function connMongo($dbName = 'blog')
 {
@@ -132,7 +134,7 @@ function getLastPhotos($db,$aid)
 	$c = $db->selectCollection('photos');
 	$cursor = $c->find(array('album_id'=>$aid));	
 	//$cursor->sort(array('createtime'=>-1)->limit(1)
-	$cursor->sort(array('createtime'=>1)->limit(1)
+	$cursor->sort(array('createtime'=>1))->limit(1);
 	return mongoObj2Array($cursor);
 }
 
@@ -147,13 +149,21 @@ function mongoObj2Array($cursor)
 	return $res;
 }
 
+function getWeibo($token,$lastID)
+{
+	$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $token);
+	$weibo = $c->user_timeline_by_id(1677691977,1,50,0,intval($lastID),1);
+  print_r($weibo);
+
+}
+
 function getLikeds($token)
 {
 
 	$curl = new Curl();
 	$count = 20;
 	$likes=array();
-	$turl = 'https://api.instagram.com/v1/users/self/media/liked?access_token='.$token.'&count='.$count;
+	$turl = 'https://api.weibo.com/2/statuses/user_timeline.json';
 	$url = $turl;
 
 	while(1)
@@ -227,7 +237,6 @@ function update_album($db,$photos,$aid)
 }
 
 
-
 is_start();
 $db = connMongo('blog');
 $user = getAdminUser($db);
@@ -248,10 +257,12 @@ if(!is_array($photo))
 	$photo = array();
 exit;
 $last_weibo_id = $photo[0]['weibo_id'];
-
+$token='2.00xFK5oB0NX5Yg2aa3a0d2920XtNJ2';
+$last_weibo_id=0;
 $feeds = getWeibo($token,$last_weibo_id);
 print_r($feeds);
 exit;
+/*
 if(is_array($feeds) && !empty($feeds))
 {
 	$ls = getInsertData($photos,$likes);
@@ -259,7 +270,7 @@ if(is_array($feeds) && !empty($feeds))
 	{
 		insertDb($db,$ls,$aid);
 	}
-}
+}*/
 //$photos = getPhotos($db,$aid);
 //update_album($db,$photos,$aid);
 function is_start($key="",$file="")
