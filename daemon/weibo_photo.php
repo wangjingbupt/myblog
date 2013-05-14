@@ -1,6 +1,7 @@
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors',1);
+set_time_limit(0);
 include('../config/config.php');
 include(CONFIG.'/db.conf.php');
 include('../util/weibo/saetv2.ex.class.php');
@@ -11,16 +12,13 @@ function connMongo($dbName = 'blog')
 	$m = new Mongo(DbConf::$mongoConf);
 	$m_db = DbConf::$BDprefix."_".$dbName;
 	$db = $m->selectDB($m_db);
-        $db->authenticate(DbConf::$mongoAuth[0],DbConf::$mongoAuth[1] );
+  //$db->authenticate(DbConf::$mongoAuth[0],DbConf::$mongoAuth[1] );
 	return $db;
 
 }
 
 function getAdminUser($db)
 {
-	return array(
-		"token"=>"2.00xFK5oB0NX5Yg2aa3a0d2920XtNJ2",
-	);
 	$c = $db->selectCollection('adminUser');
 	$user = $c->findOne(array('type'=>'weibo'));
 	if(is_array($user) && !empty($user))
@@ -61,25 +59,25 @@ function downloadImg($images)
 	{
 		foreach($images as $k =>$v)
 		{
-			$file = @file_get_contents($v['url']);
+			$file = @file_get_contents($v);
 			if($file)
 			{
-				$arr = explode('/',$v['url']);
+				$arr = explode('/',$v);
 				$num = count($arr)-1;
-				if($k == 'low_resolution')
+				if($k == 'bmiddle_pic')
 				{
-					$filePath = $fileDir.'bmiddle/instagram_'.$arr[$num];
-					$url = '/bmiddle/instagram_'.$arr[$num];
+					$filePath = $fileDir.'bmiddle/weibo_'.$arr[$num];
+					$url = '/bmiddle/weibo_'.$arr[$num];
 				}
-				else if($k == 'thumbnail')
+				else if($k == 'thumbnail_pic')
 				{
-					$filePath = $fileDir.'thumb/instagram_'.$arr[$num];
-					$url = '/thumb/instagram_'.$arr[$num];
+					$filePath = $fileDir.'thumb/weibo_'.$arr[$num];
+					$url = '/thumb/weibo_'.$arr[$num];
 				}
-				else if($k == 'standard_resolution')
+				else if($k == 'original_pic')
 				{
-					$filePath = $fileDir.'original/instagram_'.$arr[$num];
-					$url = '/original/instagram_'.$arr[$num];
+					$filePath = $fileDir.'original/weibo_'.$arr[$num];
+					$url = '/original/weibo_'.$arr[$num];
 				}
 				else
 					continue;
@@ -97,28 +95,30 @@ function insertDb($db,$likes,$aid)
 	$c = $db->selectCollection('photos');
 	foreach($likes as $like)
 	{
-		if($like['type']!='image')
-			continue;
-
 		$images = downloadImg($like['images']);
 
+		if($images['bmiddle_pic'] =="")
+			$images['bmiddle_pic'] = $images['thumbnail_pic'];
+
+		if($images['original_pic'] == "")
+			$images['original_pic'] = $images['bmiddle_pic'];
 
 		$insert = array(
 				'album_id'=>$aid,
-				'createtime'=>$like['created_time'],
-				'org_link' =>$like['link'],
-				'low' =>$images['low_resolution'],
-				'thumb' =>$images['thumbnail'],
-				'standard' =>$images['standard_resolution'],
-				'instagram_id' =>$like['id'],
-				'description'=>$like['caption']['text'],
+				'createtime'=>$like['createtime'],
+				'low' =>$images['bmiddle_pic'],
+				'thumb' =>$images['thumbnail_pic'],
+				'standard' =>$images['original_pic'],
+				'weibo_id' =>$like['weibo_id'],
+				'description'=>$like['description'],
 				'status'=>1,
 
 				);
 		$sign = $c->insert($insert);
+
+		print_r($insert );
 		if(isset($insert['_id']))
 			continue;
-
 		return false;
 	}
 	echo 'ok';
@@ -126,13 +126,13 @@ function insertDb($db,$likes,$aid)
 
 }
 
-function getLastPhotos($db,$aid)
+function getPhotos($db,$aid)
 {
 
 	$c = $db->selectCollection('photos');
 	$cursor = $c->find(array('album_id'=>$aid));	
 	//$cursor->sort(array('createtime'=>-1)->limit(1)
-	$cursor->sort(array('createtime'=>1))->limit(1);
+	$cursor->sort(array('createtime'=>1));
 	return mongoObj2Array($cursor);
 }
 
@@ -150,8 +150,29 @@ function mongoObj2Array($cursor)
 function getWeibo($token,$lastID)
 {
 	$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $token);
-	$weibo = $c->user_timeline_by_id(1677691977,1,50,0,intval($lastID),1);
-  print_r($weibo);
+	$weibo = $c->user_timeline_by_id(1677691977,1,30,0,intval($lastID),1);
+	if(!is_array($weibo['statuses']) || empty($weibo['statuses']))
+	{
+		return false;
+	}
+	$lastID = $weibo['next_cursor'];
+	foreach($weibo['statuses'] as $f)
+	{
+		if(!empty($f['pic_urls']))
+		{
+			$photo[] = array(
+				'images'=>array(
+						'thumbnail_pic' =>$f['thumbnail_pic'],
+						'bmiddle_pic'   =>$f['bmiddle_pic'],
+						'original_pic'  =>$f['original_pic'],
+				),
+				'weibo_id'			=>strval($f['id']),
+				'description'		=>$f['text'],
+				'createtime'		=>strtotime($f['created_at']),
+			);
+		}
+	}
+	return $photo;
 
 }
 
@@ -195,7 +216,7 @@ function getInsertData($photos,$likes)
 	{
 		foreach($photos as $photo)
 		{
-			if($photo['instagram_id'] == $like['id'])
+			if($photo['weibo_id'] == $like['weibo_id'])
 			{
 				$flag = true;
 				break;
@@ -231,7 +252,7 @@ function update_album($db,$photos,$aid)
 
 	$c = $db->selectCollection('album');
 	$id = new MOngoId($aid);
-	$sing = $c->update(array('type'=>'instagram'),$doc);	
+	$sing = $c->update(array('type'=>'weibo'),$doc);	
 }
 
 
@@ -250,27 +271,24 @@ if(empty($album) || !is_array($album))
 	exit;
 }
 $aid = $album['_id']->__toString();
-$photo = getLastPhotos($db,$aid);
-if(!is_array($photo))
-	$photo = array();
-exit;
-$last_weibo_id = $photo[0]['weibo_id'];
-$token='2.00xFK5oB0NX5Yg2aa3a0d2920XtNJ2';
-$last_weibo_id=0;
+$photos = getPhotos($db,$aid);
+if(!is_array($photos))
+	$photos = array();
+$last_weibo_id = intval($photos[0]['weibo_id']);
+//$last_weibo_id = 0;
 $feeds = getWeibo($token,$last_weibo_id);
-print_r($feeds);
-exit;
-/*
+if($feeds == false)
+	echo $last_weibo_id;
 if(is_array($feeds) && !empty($feeds))
 {
-	$ls = getInsertData($photos,$likes);
+	$ls = getInsertData($photos,$feeds);
 	if(is_array($ls) && !empty($ls))
 	{
 		insertDb($db,$ls,$aid);
 	}
-}*/
-//$photos = getPhotos($db,$aid);
-//update_album($db,$photos,$aid);
+}
+$photos = getPhotos($db,$aid);
+update_album($db,$photos,$aid);
 function is_start($key="",$file="")
 {
 	global  $argv ;
