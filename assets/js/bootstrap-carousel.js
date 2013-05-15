@@ -102,6 +102,14 @@
 
       isCycling && this.pause()
 
+      if(!$next.length)
+			{
+				if(next_page)
+				{
+					
+				}
+			}
+				
       $next = $next.length ? $next : this.$element.find('.item')[fallback]()
 
       if ($next.hasClass('active')) return

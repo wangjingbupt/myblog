@@ -2,6 +2,7 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
+		<script  type="text/javascript">var abcd='asdf'</script>
     <script src="/assets/js/jquery.js"></script>
     <script src="/assets/js/bootstrap-transition.js"></script>
     <script src="/assets/js/bootstrap-alert.js"></script>
