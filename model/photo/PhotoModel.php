@@ -2,6 +2,7 @@
 class PhotoModel{
 
   private $_delPhotoLimit = 20;
+  private $_albumPhotoLimit = 10;
 
 	public function __construct() {
 		$this->PhotoD = new MyMongo('photo');
@@ -118,13 +119,14 @@ class PhotoModel{
 		
 	}
 
-	public function getAlbumPhotos($aid)
+	public function getAlbumPhotos($aid,$page = 0)
 	{
 		$this->PhotoD->setCollection('photos');
 
 		$cursor = $this->PhotoD->find(array('status'=>1,'album_id'=>$aid));
 		
-		$cursor->sort(array('createtime'=>-1));
+		$offset = $page * $this->_albumPhotoLimit;
+		$cursor->sort(array('createtime'=>-1))->skip($offset)->limit($this->_albumPhotoLimit);
 		
 		return self::mongoObj2Array($cursor);
 		

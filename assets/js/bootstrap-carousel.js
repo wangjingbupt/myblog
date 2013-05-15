@@ -104,12 +104,27 @@
 
       if(!$next.length)
 			{
-				if(next_page)
+				if(now_page)
 				{
-					
+					now_page +=1. 
+					$.ajax({
+						type: "POST", 
+						url: "/photo/album/innerhtml/"+album_id+"/"+now_page,
+						success: function(msg){
+							var dataObj=eval("("+msg+")");
+							if(dataObj.code == 'ok')
+							{
+
+							}
+							else
+							{
+									
+							}
+						}
+					});
 				}
 			}
-				
+					
       $next = $next.length ? $next : this.$element.find('.item')[fallback]()
 
       if ($next.hasClass('active')) return

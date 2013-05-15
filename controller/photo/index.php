@@ -6,6 +6,7 @@ include(MODEL_PHOTO."/PhotoModel.php");
 function photoDispatch()
 {
 	$ac = $GLOBALS['URL_PATH'][1];
+	$type = $GLOBALS['URL_PATH'][2];
 
 	switch ($ac){
 		case 'upload' :
@@ -14,9 +15,18 @@ function photoDispatch()
 			new $className();
 			break;
 		case 'album' :
-			$className = 'PhotoPhotos';
-			include(CONTROLLER_PHOTO."/photos.php");
-			new $className();
+		  if($type == 'innerhtml')
+			{
+				$className = 'PhotoInnerPhotos';
+				include(CONTROLLER_PHOTO."/innerPhotos.php");
+				new $className();
+			}
+			else
+			{
+				$className = 'PhotoPhotos';
+				include(CONTROLLER_PHOTO."/photos.php");
+				new $className();
+			}
 			break;
 	  case 'pic' :
 			$className = 'PhotoPhoto';
