@@ -22,6 +22,8 @@ class PhotoPhotos extends control{
 		$datas['album'] = $photoModel->getAlbum($this->aid);
 		$datas['del'] = $this->del;
 		
+		$datas['album']['total_page'] = intval($datas['album']['photo_num']/ALBUM_PHOTO_LIMIT);
+		
 		$this->format($datas);
 	
 	}

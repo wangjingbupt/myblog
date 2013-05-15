@@ -2,7 +2,7 @@
 class PhotoModel{
 
   private $_delPhotoLimit = 20;
-  private $_albumPhotoLimit = 10;
+  private $_albumPhotoLimit = ALBUM_PHOTO_LIMIT;
 
 	public function __construct() {
 		$this->PhotoD = new MyMongo('photo');

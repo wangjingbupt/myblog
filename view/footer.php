@@ -2,7 +2,6 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-		<script  type="text/javascript">var abcd='asdf'</script>
     <script src="/assets/js/jquery.js"></script>
     <script src="/assets/js/bootstrap-transition.js"></script>
     <script src="/assets/js/bootstrap-alert.js"></script>
@@ -14,7 +13,7 @@
     <script src="/assets/js/bootstrap-popover.js"></script>
     <script src="/assets/js/bootstrap-button.js"></script>
     <script src="/assets/js/bootstrap-collapse.js"></script>
-    <script src="/assets/js/bootstrap-carousel.js"></script>
+    <script src="/assets/js/bootstrap-carousel.js" charset="utf-8"></script>
     <script src="/assets/js/bootstrap-typeahead.js"></script>
 		<?php echo $data['script']?>
 

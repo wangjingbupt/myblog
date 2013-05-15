@@ -73,7 +73,7 @@ HTML;
 HTML;
 
 		}
-		$html .='</div></div></div>';
+		$html .='</div></div></div><script  type="text/javascript">var now_page=0;var album_id="'.$datas['album']['_id'].'";var total_page ='.$datas['album']['total_page'].'</script>';
 		echo $html;
 		//include(VIEW.'/container.php');
 			

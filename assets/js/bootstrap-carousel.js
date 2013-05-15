@@ -104,25 +104,23 @@
 
       if(!$next.length)
 			{
-				if(now_page)
-				{
-					now_page +=1. 
-					$.ajax({
-						type: "POST", 
-						url: "/photo/album/innerhtml/"+album_id+"/"+now_page,
-						success: function(msg){
-							var dataObj=eval("("+msg+")");
-							if(dataObj.code == 'ok')
-							{
-
-							}
-							else
-							{
-									
-							}
+				if(type == 'next' )
+					now_page = now_page+1>total_page ? 0 : now_page+1; 
+				else
+					now_page = now_page-1 >=0? (now_page-1) : total_page;
+				var uri = "/photo/album/innerhtml/"+album_id+"/"+now_page;
+				//alert(uri);
+				$.ajax({
+					type: "GET", 
+					url: uri,
+					data:"",
+					success: function(d,msg){
+						if(msg == 'success')
+						{
+			//				alert('ok');
 						}
-					});
-				}
+					}
+				});
 			}
 					
       $next = $next.length ? $next : this.$element.find('.item')[fallback]()

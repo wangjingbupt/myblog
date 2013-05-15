@@ -4,7 +4,6 @@ class PhotoInnerPhotos extends control{
 
 
 	public function checkPara(){
-
 		$this->aid = $GLOBALS['URL_PATH'][3];
 		$this->del = $_GET['del'];
 		$this->page = intval($GLOBALS['URL_PATH'][4]);
@@ -20,6 +19,8 @@ class PhotoInnerPhotos extends control{
 
 		$datas['photos'] = $photoModel->getAlbumPhotos($this->aid,$this->page);
 		$datas['del'] = $this->del;
+//		print_r($datas['photos']);
+		echo '<div>1</div>';
 		
 //		$this->format($datas);
 	
