@@ -102,27 +102,6 @@
 
       isCycling && this.pause()
 
-      if(!$next.length)
-			{
-				if(type == 'next' )
-					now_page = now_page+1>total_page ? 0 : now_page+1; 
-				else
-					now_page = now_page-1 >=0? (now_page-1) : total_page;
-				var uri = "/photo/album/innerhtml/"+album_id+"/"+now_page;
-				//alert(uri);
-				$.ajax({
-					type: "GET", 
-					url: uri,
-					data:"",
-					success: function(d,msg){
-						if(msg == 'success')
-						{
-			//				alert('ok');
-						}
-					}
-				});
-			}
-					
       $next = $next.length ? $next : this.$element.find('.item')[fallback]()
 
       if ($next.hasClass('active')) return
@@ -174,7 +153,7 @@
   }
 
   $.fn.carousel.defaults = {
-    interval: 10000
+    interval: 5000
   , pause: 'hover'
   }
 

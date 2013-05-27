@@ -163,13 +163,13 @@ body {
 	font-size: 14px;
   line-height: 20px;
   color: #333333;
-  background-color: #2c072e;
+  background-color: #FFFFFF;
 /*  background-image: url(../img/hexabump.png);*/
 }
 
 a {
   /*color: #0088cc;*/
-  color: #993377;
+  color: #1b1b1b;
   text-decoration: none;
 }
 
@@ -644,7 +644,7 @@ h6 {
   font-weight: bold;
   line-height: 1;
 /*  color: inherit;*/
-  color: #7a0c7d;
+  color: #1b1b1b;
   text-rendering: optimizelegibility;
 }
 
@@ -800,7 +800,7 @@ abbr.initialism {
 blockquote {
   padding: 0 0 0 15px;
   margin: 0 0 20px;
-  border-left: 5px solid #eeeeee;
+  /*border-left: 5px solid #eeeeee;*/
 }
 
 blockquote p {

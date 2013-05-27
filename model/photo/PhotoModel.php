@@ -2,7 +2,6 @@
 class PhotoModel{
 
   private $_delPhotoLimit = 20;
-  private $_albumPhotoLimit = ALBUM_PHOTO_LIMIT;
 
 	public function __construct() {
 		$this->PhotoD = new MyMongo('photo');
@@ -13,7 +12,8 @@ class PhotoModel{
 	{
 		include(ROOT.'/weibo/config.php');
 		include(ROOT.'/weibo/saetv2.ex.class.php');
-		$token = '2.00BpT76C0NX5Yg03649a3e010NxkyI';
+		//$token = '2.00BpT76C0NX5Yg03649a3e010NxkyI';
+		$token = '2.006ZRr8D0NX5Yg0b6532e47eL4BNYD';
 
 		$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $token );
 
@@ -21,7 +21,6 @@ class PhotoModel{
 			return false;
 
 		$tmpFile = UPLOAD_TMP_DIR . $files['name'];
-
 		if (!move_uploaded_file($files['tmp_name'],$tmpFile))
 			return false;
 
@@ -119,14 +118,13 @@ class PhotoModel{
 		
 	}
 
-	public function getAlbumPhotos($aid,$page = 0)
+	public function getAlbumPhotos($aid)
 	{
 		$this->PhotoD->setCollection('photos');
 
 		$cursor = $this->PhotoD->find(array('status'=>1,'album_id'=>$aid));
 		
-		$offset = $page * $this->_albumPhotoLimit;
-		$cursor->sort(array('createtime'=>-1))->skip($offset)->limit($this->_albumPhotoLimit);
+		$cursor->sort(array('createtime'=>-1));
 		
 		return self::mongoObj2Array($cursor);
 		

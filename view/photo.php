@@ -28,7 +28,7 @@ class ViewPhoto {
 			$photo['pubtime'] = date("Y-m-d H:i",$photo['createtime']);
 			$html .='<div class="well"><div class="row-fluid"><div class="span8"><h2><a href="/photo/album/'.$album['_id'].'">'.$album['title'].'</a></h2></div><div class="span1 offset9"></div></div>';
 			$html .='<div class="row-fluid" style="margin-top:20px"><div><div id="myCarousel" class="carousel slide"><div class="carousel-inner">';
-			$html .= '<div class="item active" style="height:680px" ><center><img  style="max-height:600px" src="'.Tools::formatImgUrl($photo['standard']).'" alt=""><div class="carousel-caption"><p>'.$photo['description'].'</p></div></center></div>';
+			$html .= '<div class="item active" style="height:600px" ><center><img  style="max-height:600px" src="'.Tools::formatImgUrl($photo['standard']).'" alt=""><div class="carousel-caption"><p>'.$photo['description'].'</p></div></center></div>';
 			$html .='</div>';
 			$html .='</div>';
 			$html .='<div class="row-fluid" id = "accordion2" ><div class="span2"><span style="color: #aaaaaa;"><small>'.$photo['pubtime'].'</small></span></div><div class="span2 offset8"  style="text-align:right;font-weight:bold;">'.$operation.'</div></div></div></div></div>';

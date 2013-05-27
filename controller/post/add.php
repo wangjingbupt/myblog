@@ -7,10 +7,11 @@ class PostAdd extends control{
 
 		$this->blogTitle = $_POST['post_title'];
 		$this->blogContent = $_POST['post_content']; 
+		$this->blogDate = $_POST['post_date'];
 		
 		if($GLOBALS['LOGIN_DATA']['is_admin'] !=1 )
 		{
-			return false;
+			//return false;
 		}
 
 		if($this->blogContent == '' )
@@ -27,7 +28,7 @@ class PostAdd extends control{
 		
 		$postModel = new PostModel();
 
-		$data = $postModel->newPost($this->blogTitle,$this->blogContent);
+		$data = $postModel->newPost($this->blogTitle,$this->blogContent,$this->blogDate);
 		
 		if($data)
 		{

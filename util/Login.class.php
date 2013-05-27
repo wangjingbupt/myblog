@@ -223,6 +223,22 @@ class Login{
 
 	}
 
+	public function setSession($data)
+	{
+		$_SESSION['username'] = $data['username'];
+		$_SESSION['uid'] = $data['id'];
+		$_SESSION['login_type'] = $data['login_type'];
+		$_SESSION['is_admin'] = $data['is_admin'];
+
+	}
+
+	public function setSessionAndCookie($data)
+	{
+		self::setSession($data);
+		
+
+	}
+
 }
 
 ?>

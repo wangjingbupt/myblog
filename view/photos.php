@@ -27,7 +27,7 @@ class ViewPhotos {
 			$active = 'active';
 			foreach($datas['photos'] as $photo)
 			{
-				 $html .= '<div class="item '.$active.'" style="height:680px" ><center><a href="/photo/pic/'.$photo['_id'].'"><img  style="max-height:600px" src="'.Tools::formatImgUrl($photo['standard']).'" alt=""><div class="carousel-caption"><p>'.$photo['description'].'</p></div></center></div>';
+				 $html .= '<div class="item '.$active.'" style="height:600px" ><center><a href="/photo/pic/'.$photo['_id'].'"><img  style="max-height:600px" src="'.Tools::formatImgUrl($photo['standard']).'" alt=""><div class="carousel-caption"><p>'.$photo['description'].'</p></div></center></div>';
 					$active ='';
 			}
 			$html .='</div><a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a><a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a></div>
@@ -73,7 +73,7 @@ HTML;
 HTML;
 
 		}
-		$html .='</div></div></div><script  type="text/javascript">var now_page=0;var album_id="'.$datas['album']['_id'].'";var total_page ='.$datas['album']['total_page'].'</script>';
+		$html .='</div></div></div>';
 		echo $html;
 		//include(VIEW.'/container.php');
 			

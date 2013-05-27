@@ -8,7 +8,7 @@ class PostDelPost extends control{
 		$this->pid = $GLOBALS['URL_PATH'][1];
 		if($GLOBALS['LOGIN_DATA']['is_admin'] !=1 )
 		{
-			return false;
+//			return false;
 		}
 		return true;
 

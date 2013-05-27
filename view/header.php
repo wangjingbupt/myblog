@@ -2,7 +2,7 @@
 <html lang="en" xmlns:wb="http://open.weibo.com/wb">
   <head>
     <meta charset="utf-8">
-    <title>LXsnow's blog</title>
+    <title>Erik's Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -27,7 +27,7 @@
     <![endif]-->
     <!-- Le fav and touch icons -->
 
-    <link rel="shortcut icon" href="http://tp2.sinaimg.cn/1677691977/180/5641967851/0">
+    <link rel="shortcut icon" href="http://ww4.sinaimg.cn/thumbnail/62fc65d9jw1e3boz4lvw2j.jpg">
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/css/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/css/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/css/apple-touch-icon-72-precomposed.png">

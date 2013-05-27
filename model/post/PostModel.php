@@ -1,7 +1,7 @@
 <?php
 class PostModel{
 
-	private $_postLimit = 15;
+	private $_postLimit = POST_PAGE_NUM;
 	private $_postDelLimit = 20;
 
 	public function __construct() {
@@ -20,6 +20,15 @@ class PostModel{
 		
 		return self::mongoObj2Array($cursor);
 	}	
+
+	public function getPostCount()
+	{
+		$this->PostD->setCollection('post');
+		$cursor = $this->PostD->find(array('status'=>1));
+		$count = intval($cursor->count());
+
+		return $count;
+	}
 
 	public function getDelPosts($page=0)
 	{
@@ -68,10 +77,10 @@ class PostModel{
 		$e_date_y = intval(substr($date,0,4));
 		$e_date_m = $s_date_m+1;
 
-		if($d_date_m > 12)
+		if($e_date_m > 12)
 		{	
-			$d_date_m -=12;
-			$d_date_y +=1;
+			$e_date_m -=12;
+			$e_date_y +=1;
 		}
 		if($s_date_m< 10)
 			$s_date_m = '0'.$s_date_m;
@@ -160,13 +169,19 @@ class PostModel{
 
 	}
 
-	public function newPost($title,$content,$photoList=array())
+	public function newPost($title,$content,$date,$photoList=array())
 	{
 		$this->PostD->setCollection('post');
 		if(!empty($photoList))
 			$type = 1;
 		else
 			$type = 2;
+		if(isset($date))
+		{
+			$postTime = strtotime($date);
+			if($postTime<=0)
+				$postTime = time();
+		}
 		$doc = array(
 			'title'=>$title,
 			'content'=>$content,
@@ -174,8 +189,8 @@ class PostModel{
 			'type'=>$type,
 			'status'=>1,
 			'tags'=>array(),
-			'createtime'=>time(),
-			'uptime'=>time(),
+			'createtime'=>$postTime,
+			'uptime'=>$postTime,
 			'comment_num'=>0,
 			'like_num'=>0,
 		);

@@ -68,9 +68,9 @@ class PostDetail extends control{
 			}
 		}
 		else{
-			$innerhtml_1 ='<div class="row-fluid commentbox" style="width:95%;"><div class="span9" style="text-align:left;padding-right:5px;word-wrap:break-word; overflow:hidden"><i class="icon-user"></i> <span style="color:#993377;">';
+			$innerhtml_1 ='<div class="row-fluid commentbox" style="width:95%;"><div class="span9" style="text-align:left;padding-right:5px;word-wrap:break-word; overflow:hidden"><i class="icon-user"></i> <span>';
 			$innerhtml_2 = '</span>: <span>';
-			$innerhtml_3= '</span></div><div class="span2" style="text-align:right;"><small style="color:#999999">';
+			$innerhtml_3= '</span></div><div class="span3" style="text-align:right;"><small style="color:#999999">';
 		}
 
 		$data['script'] =<<<HTML
@@ -93,19 +93,22 @@ if(dataObj.code == 'ok')
 {
 	var insertText ='$innerhtml_1'+dataObj.data.user_name+'$innerhtml_2'+dataObj.data.content+'$innerhtml_3'+dataObj.data.pubtime+'</small></div></div>';
 	document.getElementById("cms_box").innerHTML = insertText+document.getElementById("cms_box").innerHTML;
-	var insertText ='<div class="alert alert-success fade in"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>评论成功!</strong></div>'
-	document.getElementById("comment").innerHTML = insertText+document.getElementById("comment").innerHTML;
+	var insertText1 ='<div class="alert alert-success fade in"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>评论成功!</strong></div>';
+	document.getElementById("comment_notice").innerHTML = insertText1;
 	document.getElementById("cms_num").innerHTML =parseInt(document.getElementById("cms_num").innerHTML)+1;
+	document.getElementById("cms_content").value = '';
+	
 }
 else
 {
 	var insertText ='<div class="alert alert-error fade in"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>评论失败!</strong></div>'
-	document.getElementById("comment").innerHTML = insertText+document.getElementById("comment").innerHTML;
+	document.getElementById("comment_notice").innerHTML = insertText;
 	
 }
 
 }   
 });   
+return false;
 }   
 </script>  
 HTML;

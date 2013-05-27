@@ -17,7 +17,7 @@ $num = $cursor->count();
 	<head>
 
     <meta charset="utf-8">
-    <title>LXsnow's blog</title>
+    <title>Erik's blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -66,7 +66,7 @@ $num = $cursor->count();
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <span class="brand" style='color:#ffffff'> LXSnow</span>
+          <span class="brand" style='color:#ffffff'> Erik's</span>
           <div class="nav-collapse collapse">
             <ul class="nav">
               <li class="active" ><a href="/">Home</a></li>
@@ -81,6 +81,8 @@ $num = $cursor->count();
 				<legend>New Blog</legend>
 					<label>标题</label>
 					<input type="text" placeholder="" name='post_title' id='post_title' class="input-xxlarge">
+					<label>日期</label>
+					<input type="text" placeholder="" name='post_date' id='post_date' class="input-xxlarge">
 					<label>正文</label>
 					<div class="box">
 						<div class="pro_tools" id="testSaveButtons"></div>
@@ -193,7 +195,7 @@ function postdata(){                              //提交数据函数
 	$.ajax({                                                  //调用jquery的ajax方法   
 type: "POST",                                      //设置ajax方法提交数据的形式   
 url: "/add",                                       //把数据提交到ok.php   
-data: "post_title="+$("#post_title").val()+"&post_content="+window.editor1.operation.submit(),     //输入框writer中的值作为提交的数据   
+data: "post_title="+$("#post_title").val()+"&post_date="+$("#post_date").val()+"&post_content="+encodeURIComponent(window.editor1.operation.submit()),     //输入框writer中的值作为提交的数据   
 success: function(msg){                  //提交成功后的回调，msg变量是ok.php输出的内容。   
 var dataObj=eval("("+msg+")");
 if(dataObj.code == 'ok')

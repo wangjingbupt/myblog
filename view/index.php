@@ -25,6 +25,17 @@ class ViewIndex {
 				$html .= ViewPost::post($post);
 			}
 		}
+		$html .='<div><ul class="pager">';
+		if(isset($datas['hasPrev']))
+		{
+			$html .='<li class="previous"><a href="/page/'.intval($datas['hasPrev']).'">Prev</a></li>';
+		}
+		if(isset($datas['hasNext']))
+		{
+			$html .='<li class="next"><a href="/page/'.intval($datas['hasNext']).'">Next</a></li>';
+		}
+		$html .='</ul></div>';
+
 		$html .='</div></div>';
 		$html .='<div class="span3">'; 
 		if(is_array($datas['recent']) && !empty($datas['recent']))
