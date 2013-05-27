@@ -110,6 +110,7 @@ function insertDb($db,$likes,$aid)
 				'thumb' =>$images['thumbnail_pic'],
 				'standard' =>$images['original_pic'],
 				'weibo_id' =>$like['weibo_id'],
+				'img_id' =>$like['img_id'],
 				'description'=>$like['description'],
 				'status'=>1,
 
@@ -132,7 +133,7 @@ function getPhotos($db,$aid)
 	$c = $db->selectCollection('photos');
 	$cursor = $c->find(array('album_id'=>$aid));	
 	//$cursor->sort(array('createtime'=>-1)->limit(1)
-	$cursor->sort(array('createtime'=>1));
+	$cursor->sort(array('createtime'=>-1));
 	return mongoObj2Array($cursor);
 }
 
@@ -150,7 +151,7 @@ function mongoObj2Array($cursor)
 function getWeibo($token,$lastID)
 {
 	$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $token);
-	$weibo = $c->user_timeline_by_id(1677691977,1,30,0,intval($lastID),1);
+	$weibo = $c->user_timeline_by_id(1677691977,1,30,intval($lastID),0,1);
 	if(!is_array($weibo['statuses']) || empty($weibo['statuses']))
 	{
 		return false;
@@ -160,16 +161,22 @@ function getWeibo($token,$lastID)
 	{
 		if(!empty($f['pic_urls']))
 		{
-			$photo[] = array(
-				'images'=>array(
-						'thumbnail_pic' =>$f['thumbnail_pic'],
-						'bmiddle_pic'   =>$f['bmiddle_pic'],
-						'original_pic'  =>$f['original_pic'],
-				),
-				'weibo_id'			=>strval($f['id']),
-				'description'		=>$f['text'],
-				'createtime'		=>strtotime($f['created_at']),
-			);
+			foreach($f['pic_urls'] as $imgs)
+			{
+				$img_arr = explode('/',$imgs['thumbnail_pic']);
+				$img_id = $img_arr[count($img_arr)-1];
+				$photo[] = array(
+					'images'=>array(
+							'thumbnail_pic' =>$imgs['thumbnail_pic'],
+							'bmiddle_pic'   =>str_replace('thumbnail','bmiddle',$imgs['thumbnail_pic']),
+							'original_pic'  =>str_replace('thumbnail','large',$imgs['thumbnail_pic']),
+					),
+					'weibo_id'			=>strval($f['id']),
+					'img_id'				=> $img_id,
+					'description'		=>$f['text'],
+					'createtime'		=>strtotime($f['created_at']),
+				);
+			}
 		}
 	}
 	return $photo;
@@ -216,7 +223,7 @@ function getInsertData($photos,$likes)
 	{
 		foreach($photos as $photo)
 		{
-			if($photo['weibo_id'] == $like['weibo_id'])
+			if($photo['img_id'] == $like['img_id'])
 			{
 				$flag = true;
 				break;
@@ -274,7 +281,7 @@ $aid = $album['_id']->__toString();
 $photos = getPhotos($db,$aid);
 if(!is_array($photos))
 	$photos = array();
-$last_weibo_id = intval($photos[0]['weibo_id']);
+$last_weibo_id = intval($photos[0]['weibo_id'])+1;
 //$last_weibo_id = 0;
 $feeds = getWeibo($token,$last_weibo_id);
 if($feeds == false)
