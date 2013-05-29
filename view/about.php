@@ -9,6 +9,7 @@ class ViewAbout {
 		include(VIEW.'/banner.php');
 		$html =<<<HTML
 		<div class="container"><div class="row-fluid"><div class = "span12">
+		<div class='well'>
 		<blockquote>
 			<p class="lead">All those moments will be lost in time,like tears in rain.</p>
 			<small><cite title="Source Title">Blade Runner</cite></small>
@@ -29,7 +30,7 @@ class ViewAbout {
 		<p>Weibo: <a href='http://weibo.com/811161987'>@京京道听途说</a></p>
 		<br/>
 		<p>业余跑步爱好者，eason fans，尤文死忠，爱音乐，爱运动。</p>
-		</div></div></div>
+		</div></div></div></div>
 HTML;
 		echo $html;
 		include(VIEW.'/footer.php');

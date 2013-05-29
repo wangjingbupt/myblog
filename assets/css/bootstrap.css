@@ -163,7 +163,8 @@ body {
 	font-size: 14px;
   line-height: 20px;
   color: #333333;
-  background-color: #FFFFFF;
+  /*background-color: #FFFFFF;*/
+	background: #292929 url(../img/body-background.jpg) repeat left top;
 /*  background-image: url(../img/hexabump.png);*/
 }
 
