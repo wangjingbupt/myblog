@@ -5,6 +5,8 @@ class Login{
 
 	public function loginAll()
 	{
+		if(self::loginLocal())
+			return;
 		if(self::loginWeibo())
 			return;
 		if(self::loginRenren())
@@ -220,6 +222,40 @@ class Login{
 		}
 
 		return false;
+
+	}
+
+	public function doLoginLocal($token)
+	{
+		if($token == LOGIN_TOKEN)
+		{
+
+			$_SESSION['local_token'] = LOGIN_TOKEN;
+			$_SESSION['login_type'] = 'local';
+			$_SESSION['local_uid'] = 1;
+			$_SESSION['local_profile_image_url'] = 'http://ww4.sinaimg.cn/thumbnail/62fc65d9jw1e3boz4lvw2j.jpg';
+			$_SESSION['local_name'] = 'Erik';
+			$_SESSION['is_admin'] = 1;
+
+			return true;
+		}
+
+		return false;
+
+	}
+
+	public function loginLocal()
+	{
+		if($_SESSION['local_token'] == LOGIN_TOKEN)
+		{
+			$this->loginData['token'] = $_SESSION['local_token'];
+			$this->loginData['uid'] = $_SESSION['local_uid'];
+			$this->loginData['profileImg'] = $_SESSION['local_profile_image_url'];
+			$this->loginData['nickName'] = $_SESSION['local_name'];
+			$this->loginData['login_type'] = $_SESSION['login_type'];
+			$this->loginData['is_admin'] = $_SESSION['is_admin'];
+			$GLOBALS['LOGIN_DATA'] = $this->loginData;
+		}
 
 	}
 

@@ -6,14 +6,14 @@
 			$renren_redirect_uri = urlencode(RR_CALLBACK_URL);
 			$instagram_redirect_uri= urlencode(IG_CALLBACK_URL);
 			$login=<<<HTML
-			<div class="offset12" style="width:30%">
+			<div class="offset11" style="width:30%">
 			<div>
 			<ul class="nav nav-pills">
 			  <li class="dropdown">
 				    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-cog icon-white"></i><b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<li><a href="/"><i class="icon-user"></i><span style="color:#111111;font-weight:bold">&nbsp;&nbsp;Sign in</span></a></li>
-							<li><a href='/'><i class="icon-arrow-right"></i><span style="color:#111111;font-weight:bold">&nbsp;&nbsp;Sign up</span></a></li>
+							<li><a href="/login"><i class="icon-user"></i><span style="color:#111111;font-weight:bold">&nbsp;&nbsp;Sign in</span></a></li>
+							<li><a href='/callback/logout'><i class="icon-arrow-right"></i><span style="color:#111111;font-weight:bold">&nbsp;&nbsp;Sign up</span></a></li>
 						</ul>
 				</li>
 			</ul></div></div>
@@ -21,6 +21,7 @@
 HTML;
 		}else if($GLOBALS['LOGIN_DATA']['is_admin']==1)
 		{
+			print_r($login_data);
 			$login_data = $GLOBALS['LOGIN_DATA'];
 			$login = '<div class="offset10" style="width:30%">';
 			$login .='
@@ -79,7 +80,7 @@ HTML;
               <li <?php echo $data['activeAbout'];?>  ><a href="/about" >About</a></li>
             </ul>
           </div><!--/.nav-collapse -->
-				<!--	<?php// echo $login; ?> -->
+					<?php echo $login; ?>
         </div>
       </div></div>
     </div>

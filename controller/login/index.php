@@ -15,6 +15,7 @@ function postDispatch()
 		case 'login' :
  			$className = 'LoginLogin';
  			include(CONTROLLER_LOGIN."/login.php");
+			break;
 		default: 
 			$className = 'LoginPage';
 			include(CONTROLLER_LOGIN."/page.php");

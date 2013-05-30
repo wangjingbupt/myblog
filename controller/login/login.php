@@ -16,7 +16,7 @@ class LoginLogin extends control{
 	public function action(){
 
 		$loginModel = new LoginModel();
-  		$sign = $loginModel->login($this->userName,$this->passwd,$this->remember); 
+  	$sign = $loginModel->login($this->userName,$this->passwd); 
 		if($sign)
 		{
 			$uri = "/";
