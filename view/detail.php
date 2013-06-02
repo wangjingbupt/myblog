@@ -69,6 +69,19 @@ HTML;
 HTML;
 
 		}
+		if(is_array($datas['tags']) && !empty($datas['tags']))
+		{
+			$style = array('text-success','text-error','text-warning','text-info');
+
+			foreach($datas['tags'] as $tag)
+			{
+				$tagName = $tag['name'];
+				$class = $style[rand(0,3)];
+				$tags .="<a href='/tag/$tagName' class='$class' >$tagName</a> "; 
+			}
+
+			$html .= '<div class="well"><h5>TAGS</h5><div class="row-fluid"><div style="word-wrap:break-word;font-size:20px;line-height:38px">'.$tags.'</div></div></div>';
+		}
 
 		if(is_array($datas['finder']) && !empty($datas['finder']))
 		{
@@ -82,19 +95,6 @@ HTML;
 			$html .= '</ul></div>';
 		}
 
-		if(is_array($datas['tags']) && !empty($datas['tags']))
-		{
-			$style = array('text-success','text-error','text-warning','text-info');
-
-			foreach($datas['tags'] as $tag)
-			{
-				$tagName = $tag['name'];
-				$class = $style[rand(0,3)];
-				$tags .="<a href='/tag/$tagName' class='$class' >$tagName</a> "; 
-			}
-
-			$html .= '<div class="well"><h5>TAG</h5><div class="row-fluid"><div style="word-wrap:break-word;font-size:20px;line-height:38px">'.$tags.'</div></div></div>';
-		}
 
 		$html .='</div></div></div>';
 		echo $html;
