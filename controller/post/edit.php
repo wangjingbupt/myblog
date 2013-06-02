@@ -9,6 +9,7 @@ class PostEdit extends control{
 		$this->blogContent = $_POST['post_content']; 
 		$this->blogDate = $_POST['post_date'];
 		$this->blogId = $_POST['post_id'];
+		$this->blogTags = $_POST['post_tags'];
 		
 		if($GLOBALS['LOGIN_DATA']['is_admin'] !=1 )
 		{
@@ -29,12 +30,25 @@ class PostEdit extends control{
 		
 		$postModel = new PostModel();
 
-		$data = $postModel->editPost($this->blogId,$this->blogTitle,$this->blogContent,$this->blogDate);
+		$tags = array();
+		if( $this->blogTags != '')
+		{
+			$tags = explode(',',$this->blogTags);
+			$tags = array_unique($tags);
+			foreach($tags as $t)
+			{
+				$tempTags[]=array('name'=>$t);
+			}
+			$tags = $tempTags;
+		}
+
+		$data = $postModel->editPost($this->blogId,$this->blogTitle,$this->blogContent,$this->blogDate,$tags);
 		
 		if($data)
 		{
 			$this->display(array('code'=>'ok','data'=>$data));
 		}
+		Tools::writeLog('tags','1');
 
 	}
 

@@ -20,6 +20,21 @@ class PostModel{
 		
 		return self::mongoObj2Array($cursor);
 	}	
+	
+	public function getPostByTag($tag='',$page=0)
+	{
+		if($tag =='')
+			return array();
+
+		$this->PostD->setCollection('post');
+		$offset = $page * $this->_postLimit;  
+
+		$cursor = $this->PostD->find(array('tags'=>array('$elemMatch'=>array('name'=>$tag)),'status'=>1));
+		$cursor->sort(array('createtime'=>-1))->skip($offset)->limit($this->_postLimit); 
+
+		return self::mongoObj2Array($cursor);
+	}
+
 
 	public function getPostCount()
 	{
@@ -111,6 +126,24 @@ class PostModel{
 
 	}
 
+	public function getTags()
+	{
+		$this->PostD->setCollection('tags');
+		$cursor = $this->PostD->find(array());
+
+		return self::mongoObj2Array($cursor);
+
+	}
+
+	public function getTagPostCount($tag)
+	{
+		$this->PostD->setCollection('tags');
+		$doc = $this->PostD->findOne(array('name'=>$tag));
+		$num = $doc['num'];
+
+		return intval($num);  
+	}
+
 	public function getDetail($blog_id,$flag = 1)
 	{
 		$this->PostD->setCollection('post');
@@ -172,7 +205,7 @@ class PostModel{
 
 	}
 
-	public function editPost($post_id,$title,$content,$date,$photoList=array())
+	public function editPost($post_id,$title,$content,$date,$tags=array(),$photoList=array())
 	{
 		$this->PostD->setCollection('post');
 		
@@ -197,6 +230,10 @@ class PostModel{
 		{
 			$doc['content'] = $content;
 		}
+		if(isset($tags))
+		{
+			$doc['tags'] = $tags;
+		}
 
 		$sign = $this->PostD->update(array('_id'=>$id), $doc);
 		if($sign)
@@ -208,7 +245,7 @@ class PostModel{
 
 	}
 
-	public function newPost($title,$content,$date,$photoList=array())
+	public function newPost($title,$content,$date,$tags=array(),$photoList=array())
 	{
 		$this->PostD->setCollection('post');
 		if(!empty($photoList))
@@ -227,7 +264,7 @@ class PostModel{
 			'photoList'=>$photoList,
 			'type'=>$type,
 			'status'=>1,
-			'tags'=>array(),
+			'tags'=>$tags,
 			'createtime'=>$postTime,
 			'uptime'=>$postTime,
 			'comment_num'=>0,

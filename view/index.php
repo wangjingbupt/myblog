@@ -44,10 +44,10 @@ class ViewIndex {
 				{
 					if($count++ <10)
 					{
-						if(mb_strlen($post['title'],'utf-8') > 8)
-							$title = mb_substr($post['title'],0,7,'utf-8').'..';
-						else
-							$title = $post['title'];
+						//if(mb_strlen($post['title'],'utf-8') > 8)
+						//$title = mb_substr($post['title'],0,7,'utf-8').'..';
+						//else
+						$title = $post['title'];
 						$pubtime = date("y-m-d",$post['createtime']);
 						$url = '/detail/'.$post['_id'];
 						//$pubtime = $post['pubtime'];
@@ -89,6 +89,21 @@ HTML;
 			}
 			$html .= '</ul></div>';
 		}
+
+		if(is_array($datas['tags']) && !empty($datas['tags']))
+		{
+			$style = array('text-success','text-error','text-warning','text-info');
+
+			foreach($datas['tags'] as $tag)
+			{
+				$tagName = $tag['name'];
+				$class = $style[rand(0,3)];
+				$tags .="<a href='/tag/$tagName' class='$class' >$tagName</a> "; 
+			}
+
+			$html .= '<div class="well"><h5>TAG</h5><div class="row-fluid"><div style="word-wrap:break-word;font-size:20px;line-height:38px">'.$tags.'</div></div></div>';
+		}
+
 		$html .='</div></div></div>';
 		echo $html;
 		//include(VIEW.'/container.php');

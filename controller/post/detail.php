@@ -21,6 +21,8 @@ class PostDetail extends control{
 
 		$datas['finder'] = $postModel->getFinder();
 
+		$datas['tags'] = $postModel->getTags();
+
 		$cmsModel = new CommentModel();
 	
 		$datas['comment'] = $cmsModel->getCmsList($this->blog_id);

@@ -1,11 +1,15 @@
 <?php
 
-class PostList extends control{
+class PostTag extends control{
 
 
 	public function checkPara(){
 		
-		$this->page = intval($GLOBALS['URL_PATH'][1]);
+		$this->page = intval($GLOBALS['URL_PATH'][2]);
+		$this->tag = urldecode($GLOBALS['URL_PATH'][1]);
+
+		if($this->tag=='')
+			return false;
 
 		return true;
 
@@ -13,8 +17,8 @@ class PostList extends control{
 
 	public function action(){
 		$postModel = new PostModel();
-		$datas['post'] = $postModel->getPostList($this->page);
-		$postNum = $postModel->getPostCount();
+		$datas['post'] = $postModel->getPostByTag($this->tag,$this->page);
+		$postNum = $postModel->getTagPostCount($this->tag);
 		if($postNum > POST_PAGE_NUM * ($this->page+1))
 			$datas['hasNext'] = $this->page+1;
 
@@ -24,8 +28,7 @@ class PostList extends control{
 		$datas['recent'] = $postModel->getPostList();
 
 		$datas['finder'] = $postModel->getFinder();
-		
-		$datas['tags'] = $postModel->getTags();
+		$datas['tags']   = $postModel->getTags();
 
 		$this->format($datas);
 

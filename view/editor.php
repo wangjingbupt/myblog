@@ -11,6 +11,11 @@ class ViewEditor {
 			$post_id = $post['_id'];
 			$title = $post['title'];
 			$date = date('Y-m-d H:i:s',$post['createtime']);
+			foreach($post['tags'] as $t)
+			{
+				$tempTags[] = $t['name'];
+			}
+			$tags = implode(',',$tempTags);
 		}
 
 		include(VIEW.'/header.php');

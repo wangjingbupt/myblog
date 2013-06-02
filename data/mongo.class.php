@@ -2,6 +2,7 @@
 include(CONFIG.'/db.conf.php');
 
 class MyMongo{
+	public $dbHandler = null;
 	
 	public function __construct($db = 'blog', $collection = '') {
 		$this->db = DbConf::$BDprefix."_".$db	;
@@ -24,7 +25,7 @@ class MyMongo{
 	public function getDbHandler()
 	{
 		$this->dbHandler = $this->handler->selectDB($this->db);
-		$this->dbHandler->authenticate(DbConf::$mongoAuth[0], DbConf::$mongoAuth[1]);
+		//$this->dbHandler->authenticate(DbConf::$mongoAuth[0], DbConf::$mongoAuth[1]);
 		return $this->dbHandler;
 	}
 

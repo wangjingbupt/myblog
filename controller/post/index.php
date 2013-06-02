@@ -40,6 +40,10 @@ function postDispatch()
 			$className = 'PostDelPost';
 			include(CONTROLLER_POST."/delPost.php");
 			break;
+		case 'tag' :
+			$className = 'PostTag';
+			include(CONTROLLER_POST."/tag.php");
+			break;
 		default: 
 			$className = 'PostList';
 			include(CONTROLLER_POST."/list.php");
