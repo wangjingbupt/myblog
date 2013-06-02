@@ -30,9 +30,9 @@ SinaEditor.CONF.bubbleClassName = 'se_bubble';
 //需要在这里指明路径,下面的两句就可以不要了。
 var href = window.location.href;
 var loc = href.substring(0,href.lastIndexOf('/'));
-SinaEditor.CONF.STYLELOC = loc+'/style/';
-SinaEditor.CONF.transparentIMG = SinaEditor.CONF.STYLELOC+"imgs/SG_line.gif";
-SinaEditor.CONF.fakeFLASH = SinaEditor.CONF.STYLELOC+"imgs/fake_flash.png";
+SinaEditor.CONF.STYLELOC = '/assets/';
+SinaEditor.CONF.transparentIMG = SinaEditor.CONF.STYLELOC+"img/SG_line.gif";
+SinaEditor.CONF.fakeFLASH = SinaEditor.CONF.STYLELOC+"img/fake_flash.png";
 
 //链接点击后弹出的URL
 SinaEditor.CONF.aBubbleTemplete = ['<div class="se_bubble_a_panel">',
@@ -96,7 +96,7 @@ SinaEditor.CONF.flashBubbleTemplete = ['<div class="se_bubble_a_panel">',
 											'</span>',
 											'<div style="border:1px solid;display:none;" id="#{showflash}"></div>',
 										'</div>',
-										'<img id="#{closeid}" src="',SinaEditor.CONF.STYLELOC,'imgs/bubble_closebox.gif" style="padding:3px;float:left;">',
+										'<img id="#{closeid}" src="',SinaEditor.CONF.STYLELOC,'img/bubble_closebox.gif" style="padding:3px;float:left;">',
 									'</div>',
 								'</div>'].join('');
 

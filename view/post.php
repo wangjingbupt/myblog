@@ -82,6 +82,7 @@ public function post($post)
 	if($GLOBALS['LOGIN_DATA']['is_admin'] ==1)
 	{
 				$operation = '&nbsp;&nbsp;<a href="/deletepost/'.$post['_id'].'"><small>删除</small></a>';
+				$operation .= '&nbsp;&nbsp;<a href="/editor/'.$post['_id'].'"><small>编辑</small></a>';
 	}
 	$html = <<<HTML
 						<div class="well">

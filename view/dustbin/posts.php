@@ -26,7 +26,7 @@ class ViewDustbinPost {
 			foreach($datas['posts'] as $post)
 			{
 				$post['pubtime'] = date("Y-m-d H:i",$post['createtime']);
-				$html .= '<tr><td style="width:400px"><p style="color:#7a0c7d;">'.$post['title'].'</p></td><td style="width:120px;text-align:center;color:#999999;">'.$post['pubtime'].'</td><td style="width:80px;text-align:center;"><a href="/dustbin/recoverPost/'.$post['_id'].'">恢复</a></td></tr>';
+				$html .= '<tr><td style="width:400px"><p style="color:#7a0c7d;">'.$post['title'].'</p></td><td style="width:120px;text-align:center;color:#999999;">'.$post['pubtime'].'</td><td style="width:80px;text-align:center;"><a href="/dustbin/recoverPost/'.$post['_id'].'">恢复</a><a href="/editor/'.$post['_id'].'">编辑</a></td></tr>';
 			}
 			$html .='</table>';
 		}

@@ -111,11 +111,14 @@ class PostModel{
 
 	}
 
-	public function getDetail($blog_id)
+	public function getDetail($blog_id,$flag = 1)
 	{
 		$this->PostD->setCollection('post');
 		$id = new MOngoId($blog_id);
-		$doc = $this->PostD->findOne(array('_id'=>$id,'status'=>1));
+		if($flag == 1)
+			$doc = $this->PostD->findOne(array('_id'=>$id,'status'=>1));
+		else
+			$doc = $this->PostD->findOne(array('_id'=>$id));
 
 		return self::mongoDoc2Array($doc);
 
@@ -166,6 +169,42 @@ class PostModel{
 		$sign = $this->PostD->update(array('_id'=>$id,'status'=>1), array('$inc' => array("comment_num" => -1)));
 
 		return $sign;
+
+	}
+
+	public function editPost($post_id,$title,$content,$date,$photoList=array())
+	{
+		$this->PostD->setCollection('post');
+		
+		$id = new MOngoId($post_id);
+		$doc = $this->PostD->findOne(array('_id'=>$id,'status'=>1));
+		if(!$doc)
+		{
+			return false;
+		}
+		if(isset($date))
+		{
+			$postTime = strtotime($date);
+			if($postTime<=0)
+				$postTime = time();
+			$doc['createtime'] = $postTime;
+		}
+		if(isset($title))
+		{
+			$doc['title'] = $title;
+		}
+		if(isset($content))
+		{
+			$doc['content'] = $content;
+		}
+
+		$sign = $this->PostD->update(array('_id'=>$id), $doc);
+		if($sign)
+			return self::mongoDoc2Array($doc);
+
+		return false;
+
+
 
 	}
 
