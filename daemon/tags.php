@@ -10,11 +10,20 @@ function checkTags()
 	$path = LOG_PATH . 'tags'; 
 	$fp = fopen($path,'r');
 	$sign = fread($fp,4096);
+	fclose($fp);
 	if($sign == '1')
 		return true;
 	else
 		return false;
 
+}
+
+function doneTags()
+{
+	$path = LOG_PATH . 'tags'; 
+	$fp = fopen($path,'w');
+	$sign = fwrite($fp,'0');
+	fclose($fp);
 }
 
 function connMongo($dbName = 'blog')
@@ -103,6 +112,7 @@ print_r($tags);
 if(empty($tags))
 	exit;
 updateTags($db,$tags);
+doneTags();
 
 
 function is_start($key="",$file="")
