@@ -25,7 +25,7 @@ class PostTag extends control{
 		if($this->page > 0)
 			$datas['hasPrev'] = $this->page-1;
 
-		$datas['recent'] = $postModel->getPostList();
+		$datas['recent'] = $postModel->getPostByTag($this->tag,0);
 
 		$datas['finder'] = $postModel->getFinder();
 		$datas['tags']   = $postModel->getTags();
