@@ -27,6 +27,45 @@ class ViewFinder {
 		}
 		$html .='</div></div>';
 		$html .='<div class="span3">'; 
+		if(is_array($datas['recent']) && !empty($datas['recent']))
+		{
+				foreach($datas['recent'] as $post)
+				{
+					if($count++ <10)
+					{
+						//if(mb_strlen($post['title'],'utf-8') > 8)
+						//$title = mb_substr($post['title'],0,7,'utf-8').'..';
+						//else
+						$title = $post['title'];
+						$pubtime = date("y-m-d",$post['createtime']);
+						$url = '/detail/'.$post['_id'];
+						//$pubtime = $post['pubtime'];
+						$recentList .= <<<HTML
+							<tr>
+							<td style='width:70%;'><a href="$url">$title</a></td>
+							<td style='width:30%;'><span style = 'color:#999999;font-size:9px;'>$pubtime</span></td>
+							</tr>	
+HTML;
+					}
+				}
+
+			$html .= <<<HTML
+				<div class="well">
+				<h5>
+				最近发表的文章
+				</h5>
+				<div class="row-fluid">
+				<div class = "span11">
+				<table class="table table-condensed">
+				$recentList	
+				</table>
+				</div>
+				</div>
+				</div>
+
+HTML;
+
+		}
 
 		if(is_array($datas['finder']) && !empty($datas['finder']))
 		{

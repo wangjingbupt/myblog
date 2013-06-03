@@ -17,6 +17,8 @@ class PostFinder extends control{
 	
 		$datas['post'] = $postModel->getFinderList($this->date,$this->page);
 
+		$datas['recent'] = $postModel->getFinderList($this->date,0);
+
 		$datas['finder'] = $postModel->getFinder();
 
 		$this->format($datas);
