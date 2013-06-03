@@ -10,13 +10,11 @@ class PhotoModel{
 
 	public function upload($files)
 	{
-		include(ROOT.'/weibo/config.php');
-		include(ROOT.'/weibo/saetv2.ex.class.php');
 		//$token = '2.00BpT76C0NX5Yg03649a3e010NxkyI';
-		$token = '2.006ZRr8D0NX5Yg0b6532e47eL4BNYD';
+		$token = '2.006ZRr8D0NX5Yg44991ac170i3RgtB';
+		//$token = '2.006ZRr8D0NX5Yg0b6532e47eL4BNYD';
 
 		$c = new SaeTClientV2( WB_AKEY , WB_SKEY , $token );
-
 		if (!is_uploaded_file($files['tmp_name']))
 			return false;
 
@@ -26,7 +24,6 @@ class PhotoModel{
 
 		list($m,$s) =explode(' ',microtime());
 		$status = '分享图片'.($s+$m);
-
 		$ret = $c->upload($status, $tmpFile );
 
 		@unlink($tmpFile);
