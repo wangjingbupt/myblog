@@ -76,8 +76,9 @@ HTML;
 			foreach($datas['tags'] as $tag)
 			{
 				$tagName = $tag['name'];
+				$tagPostNum = $tag['num'];
 				$class = $style[rand(0,3)];
-				$tags .="<a href='/tag/$tagName' class='$class' >$tagName</a> "; 
+				$tags .="<a href='/tag/$tagName' class='$class' >$tagName<span style='font-size:8px;'>($tagPostNum)</span></a> "; 
 			}
 
 			$html .= '<div class="well"><h5>TAGS</h5><div class="row-fluid"><div style="word-wrap:break-word;font-size:20px;line-height:38px">'.$tags.'</div></div></div>';

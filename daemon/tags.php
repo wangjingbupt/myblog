@@ -101,6 +101,7 @@ is_start();
 $sign = checkTags();
 if(!$sign)
 	exit;
+echo 'start';
 $db = connMongo('blog');
 $posts = getPosts($db);
 if(empty($posts))
